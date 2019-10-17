@@ -51,8 +51,8 @@ Follow the Installation guide above.
         * Manage Trailers - user locked
         * Settings - user locked
         * Login/Logout
-    * films
-    * about
+    * Films
+    * About
 
 
 ## Todo
