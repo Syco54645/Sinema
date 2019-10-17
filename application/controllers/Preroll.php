@@ -21,6 +21,8 @@ class Preroll extends MY_Controller {
 
         $data['prerolls'] = $this->filmmodel->getPrerolls();
         
+        $data['title'] = "Prerolls (" . count($data['prerolls']) . ")";
+
         $this->load->view('partials/template-header', $data);
         $this->load->view('preroll/v_manage');
         $this->load->view('partials/template-footer', $data);
