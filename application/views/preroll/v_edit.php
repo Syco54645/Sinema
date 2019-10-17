@@ -28,6 +28,21 @@
 
             <div class="row">
                 <div class="col-md-4 col-sm-6 col-xs-12">
+                    <label class="control-label " for="series">
+                       Series
+                    </label>
+                    <select class="select form-control"
+                        name="series"
+                        id="series"
+                        ng-options="prerollSeries.id as prerollSeries.preroll_series_name for prerollSeries in viewVars.prerollSeries"
+
+                        ng-model="model.preroll.preroll_series_id"
+                    ></select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 col-sm-6 col-xs-12">
                     <label class="control-label " for="title">
                         Title
                     </label>

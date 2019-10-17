@@ -8,6 +8,7 @@ Sinema.controller('EditPrerollController', ['$scope', '$location', '$http', func
       summary: viewVars.preroll.summary,
       active: viewVars.preroll.active,
       preroll_type_id: viewVars.preroll.preroll_type_id,
+      preroll_series_id: viewVars.preroll.preroll_series_id,
     }
   };
 

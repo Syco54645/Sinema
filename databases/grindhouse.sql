@@ -119,7 +119,15 @@ CREATE TABLE IF NOT EXISTS "prerolls" (
 	`artUrl`	TEXT DEFAULT null,
 	`preroll_type_id`	INTEGER DEFAULT null,
 	`active`	INTEGER DEFAULT 1,
+    `preroll_series_id` INTEGER DEFAULT null
 	PRIMARY KEY(`id`)
 );
+
+CREATE TABLE `preroll_series` ( 
+    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, 
+    `preroll_series_name` TEXT NOT NULL, 
+    `preroll_series_slug` TEXT NOT NULL, 
+    `active` INTEGER DEFAULT 1 
+)
 
 COMMIT;

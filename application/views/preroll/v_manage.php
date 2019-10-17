@@ -11,6 +11,7 @@
                                 <td>Title</td>
                                 <td>Summary</td>
                                 <td>Thumb</td>
+                                <td>Series</td>
                                 <td>Type</td>
                             </tr>
                         </thead>
@@ -20,6 +21,7 @@
                                 <td><a href="/admin/prerolls/edit/{{ ::preroll.id }}">{{ ::preroll.title }}</a></td>
                                 <td>{{ ::preroll.summary }}</td>
                                 <td><img class="preroll-image" ng-src="{{ ::preroll.thumbUrl }}" /></td>
+                                <td>{{ ::preroll.preroll_series_name }}</td>
                                 <td>{{ ::preroll.preroll_type_name }}</td>
                             </tr>
                         </tbody>

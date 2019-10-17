@@ -59,9 +59,10 @@ class FilmModel extends MY_Model {
 
     public function getPrerolls() {
 
-        $this->db->select('p.*, pt.preroll_type_name, pt.preroll_type_description');
+        $this->db->select('p.*, pt.preroll_type_name, pt.preroll_type_description, ps.preroll_series_name');
         $this->db->from('prerolls p');
         $this->db->join('preroll_type pt', 'p.preroll_type_id=pt.id', 'left outer');
+        $this->db->join('preroll_series ps', 'preroll_series_id=ps.id', 'left outer');
 
         $result = $this->db->get();
 
@@ -70,10 +71,11 @@ class FilmModel extends MY_Model {
     
     public function getPrerollById($id) {
 
-        $this->db->select('p.*, pt.preroll_type_name, pt.preroll_type_description');
+        $this->db->select('p.*, pt.preroll_type_name, pt.preroll_type_description, ps.preroll_series_name');
         $this->db->from('prerolls p');
         $this->db->where('p.id', $id);
         $this->db->join('preroll_type pt', 'preroll_type_id=pt.id', 'left outer');
+        $this->db->join('preroll_series ps', 'preroll_series_id=ps.id', 'left outer');
 
         $result = $this->db->get();
 
@@ -90,6 +92,16 @@ class FilmModel extends MY_Model {
 
         $this->db->select('*');
         $this->db->from('preroll_type');
+
+        $result = $this->db->get();
+
+        return $result->result_array();
+    }
+
+    public function getPrerollSeries() {
+
+        $this->db->select('*');
+        $this->db->from('preroll_series');
 
         $result = $this->db->get();
 

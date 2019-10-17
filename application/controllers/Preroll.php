@@ -33,6 +33,7 @@ class Preroll extends MY_Controller {
 
         $data['preroll'] = $this->filmmodel->getPrerollById($prerollId);
         $data['prerollTypes'] = $this->filmmodel->getPrerollTypes();
+        $data['prerollSeries'] = $this->filmmodel->getPrerollSeries();
 
         $this->load->view('partials/template-header', $data);
         $this->load->view('preroll/v_edit');
