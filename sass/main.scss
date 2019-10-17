@@ -1,0 +1,42 @@
+.step {
+    margin-bottom: 20px;
+    .step-number {
+        font-size: 20px;
+    }
+    .step-desc {
+        color: #878787;
+        font-size: 13px;
+    }
+}
+.btn.micro {
+    height: 22px;
+    line-height: 10px;
+    font-size: 10px;
+}
+
+.btn.btn-green {
+    color: #fff;
+    background-color: #24a240;
+    border-color: #24a233;
+}
+.btn.btn-green:hover {
+    color: #fff;
+    background-color: #1a7b2f;
+    border-color: #1a7a12;
+}
+
+.genre-wrapper.disabled,
+.subgenre-wrapper.disabled {
+    background-color: #ccc;
+}
+
+.preroll-image {
+    width: 100px;
+}
+
+.edit-preoll {
+    .preroll-image {
+        margin-top: 20px;
+        width: 400px;
+    }
+}
