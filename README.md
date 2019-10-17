@@ -75,3 +75,4 @@ Follow the Installation guide above.
 * make create search work with tighter genre requirements (dont use where in but rather a bunch of wehere)
 * ~fix base model~
 * clean up flashdata
+* some sort of branding
