@@ -31,10 +31,10 @@ Follow the Installation guide above.
 * For css compilation run `grunt watch`
 
 
-## Credits
+## Credits/Shoutouts
 * drpenismd - For putting up with my excitement about this project and providing the name
 * tuna - Again, for putting up with my excitement and talking exploitation cinema with me
-* lnewlf11 - For watching the films with me
+* lnewlf11 - Helping with ideas and helping to prune down a list of 5,000+ subgenres that we wanted to keep. Oh and for watching the films with me
 
 
 ## Sitemap
