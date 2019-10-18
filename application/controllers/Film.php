@@ -63,9 +63,9 @@ class Film extends MY_Controller {
             $id = $this->input->post('id');
             unset($qd['id']);
             
-            $this->filmmodel->updatePreroll($id, $qd);
+            $this->filmmodel->updateFilm($id, $qd);
 
-            $this->session->set_flashdata('success', 'Preroll Updated Successfully');
+            $this->session->set_flashdata('success', 'Film Updated Successfully');
             echo json_encode(['status' => 'success']);
         }
     }

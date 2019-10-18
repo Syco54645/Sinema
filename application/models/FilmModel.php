@@ -112,6 +112,12 @@ class FilmModel extends MY_Model {
         $this->db->update('prerolls', $qd);
     }
 
+    public function updateFilm($id, $qd) {
+
+        $this->db->where('id', $id);
+        $this->db->update('films', $qd);
+    }
+
     public function getPrerollTypes() {
 
         $this->db->select('*');

@@ -2,26 +2,26 @@ PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 
 CREATE TABLE IF NOT EXISTS "films" (
-	`id`	INTEGER NOT NULL UNIQUE,
-	`title`	TEXT NOT NULL,
-	`studio`	INTEGER DEFAULT null,
-	`rating`	TEXT DEFAULT null,
-	`year`	TEXT DEFAULT null,
-	`summary`	TEXT DEFAULT null,
-	`thumb`	TEXT DEFAULT null,
-	`art`	TEXT DEFAULT null,
-	`guid`	TEXT DEFAULT null,
-	`imdbId`	TEXT DEFAULT null,
-	`thumbUrl`	TEXT DEFAULT null,
-	`artUrl`	TEXT DEFAULT null,
-	PRIMARY KEY(`id`)
+    `id`    INTEGER NOT NULL UNIQUE,
+    `title` TEXT NOT NULL,
+    `studio`    INTEGER DEFAULT null,
+    `rating`    TEXT DEFAULT null,
+    `year`  TEXT DEFAULT null,
+    `summary`   TEXT DEFAULT null,
+    `thumb` TEXT DEFAULT null,
+    `art`   TEXT DEFAULT null,
+    `guid`  TEXT DEFAULT null,
+    `imdbId`    TEXT DEFAULT null,
+    `thumbUrl`  TEXT DEFAULT null,
+    `artUrl`    TEXT DEFAULT null,
+    `active` INTEGER DEFAULT 1
+    PRIMARY KEY(`id`)
 );
 
-
 CREATE TABLE `genres` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`genre`	TEXT NOT NULL UNIQUE,
-	`genre_slug`	TEXT NOT NULL UNIQUE
+    `id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    `genre` TEXT NOT NULL UNIQUE,
+    `genre_slug`    TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE `subgenres` ( 
@@ -42,13 +42,13 @@ CREATE TABLE `map_subgenre_film` (
 );
 
 CREATE TABLE IF NOT EXISTS "settings" (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`setting_name`	TEXT NOT NULL UNIQUE,
-	`setting_value`	TEXT,
-	`last_updated`	TIMESTAMP DEFAULT current_timestamp,
-	`description`	text,
-	`sort_order`	integer,
-	`setting_slug`	TEXT
+    `id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    `setting_name`  TEXT NOT NULL UNIQUE,
+    `setting_value` TEXT,
+    `last_updated`  TIMESTAMP DEFAULT current_timestamp,
+    `description`   text,
+    `sort_order`    integer,
+    `setting_slug`  TEXT
 );
 
 INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug)
@@ -65,15 +65,15 @@ VALUES('Plex API Token', '', 'The API token of your plex server', 200, 'plex-api
 
 
 CREATE TABLE `countries` (
-	`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`country`	TEXT UNIQUE,
-	`country_slug`	TEXT UNIQUE
+    `id`    INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+    `country`   TEXT UNIQUE,
+    `country_slug`  TEXT UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS "map_country_film" (
-	`film_id`	INTEGER NOT NULL,
-	`country_id`	INTEGER NOT NULL,
-	PRIMARY KEY(`film_id`,`country_id`)
+    `film_id`   INTEGER NOT NULL,
+    `country_id`    INTEGER NOT NULL,
+    PRIMARY KEY(`film_id`,`country_id`)
 );
 
 CREATE TABLE `grindhouse` (
@@ -84,10 +84,10 @@ CREATE TABLE `grindhouse` (
 );
 
 CREATE TABLE `preroll_type` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`preroll_type_name`	TEXT NOT NULL UNIQUE,
-	`preroll_type_slug`	TEXT NOT NULL UNIQUE,
-	`preroll_type_description`	TEXT
+    `id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    `preroll_type_name` TEXT NOT NULL UNIQUE,
+    `preroll_type_slug` TEXT NOT NULL UNIQUE,
+    `preroll_type_description`  TEXT
 );
 
 INSERT INTO preroll_type(preroll_type_name, preroll_type_slug, preroll_type_description)
@@ -109,18 +109,18 @@ INSERT INTO preroll_type(preroll_type_name, preroll_type_slug, preroll_type_desc
 VALUES('Outro','outro','Things that would be played at the end of the night');
 
 CREATE TABLE IF NOT EXISTS "prerolls" (
-	`id`	INTEGER NOT NULL UNIQUE,
-	`title`	TEXT NOT NULL,
-	`summary`	TEXT DEFAULT null,
-	`thumb`	TEXT DEFAULT null,
-	`art`	TEXT DEFAULT null,
-	`guid`	TEXT DEFAULT null,
-	`thumbUrl`	TEXT DEFAULT null,
-	`artUrl`	TEXT DEFAULT null,
-	`preroll_type_id`	INTEGER DEFAULT null,
-	`active`	INTEGER DEFAULT 1,
+    `id`    INTEGER NOT NULL UNIQUE,
+    `title` TEXT NOT NULL,
+    `summary`   TEXT DEFAULT null,
+    `thumb` TEXT DEFAULT null,
+    `art`   TEXT DEFAULT null,
+    `guid`  TEXT DEFAULT null,
+    `thumbUrl`  TEXT DEFAULT null,
+    `artUrl`    TEXT DEFAULT null,
+    `preroll_type_id`   INTEGER DEFAULT null,
+    `active`    INTEGER DEFAULT 1,
     `preroll_series_id` INTEGER DEFAULT null
-	PRIMARY KEY(`id`)
+    PRIMARY KEY(`id`)
 );
 
 CREATE TABLE `preroll_series` ( 

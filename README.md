@@ -9,6 +9,7 @@ Sinema is an automation tool to help recreate the Grindhouse experience of the 7
 * Import "subgenres" using IMDbPY
 * Create double feature from films using genre/subgenre
 * Manage prerolls
+* Manage films
 
 ## Installation
 
