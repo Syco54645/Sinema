@@ -65,5 +65,8 @@ $route['admin-settings'] = 'admin/settings';
 $route['admin/prerolls'] = 'preroll/manage';
 $route['admin/prerolls/edit/(:num)'] = 'preroll/edit/$1';
 
+$route['admin/films'] = 'film/manage';
+$route['admin/films/edit/(:num)'] = 'film/edit/$1';
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

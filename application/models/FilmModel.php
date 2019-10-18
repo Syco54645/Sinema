@@ -1,20 +1,38 @@
-<?php 
+<?php
 class FilmModel extends MY_Model {
 
-    public function getFilms($limit=null, $offset=0) {
+    public function getFilms($options = []) {
 
-        $this->db->select('*');
-        $this->db->from('films');
-        if ($limit != null) {
-            if ($offset > 0) {
-                $this->db->limit($limit, $offset);
+        $this->db->select('f.*');
+        $this->db->from('films f');
+
+        if (isset($options['typeId'])) {
+            $this->db->where('preroll_type_id', $options['typeId']);
+        }
+        if (isset($options['limit']) && $options['limit'] != null) {
+            if ($options['offset'] > 0) {
+                $this->db->limit($options['limit'], $options['offset']);
             } else {
-                $this->db->limit($limit);
+                $this->db->limit($options['limit']);
             }
         }
 
+        if (isset($options['genreId'])) {
+            $this->db->join('map_genre_film mgf', 'mgf.film_id = f.id');
+            $this->db->where('genre_id', $options['genreId']);
+        }
+
+        if (isset($options['subgenreId'])) {
+            $this->db->join('map_subgenre_film msf', 'msf.film_id = f.id');
+            $this->db->where('subgenre_id', $options['subgenreId']);
+        }
+
+        if (isset($options['orderBy'])) {
+            $this->db->order_by($options['orderBy']['field'], $options['orderBy']['direction']);
+        }
+
         $result = $this->db->get();
-        //Utility::debug($this->db->last_query(), true);
+
         return $result->result_array();
     }
 
@@ -57,18 +75,24 @@ class FilmModel extends MY_Model {
         return $this->db->insert_id();
     }
 
-    public function getPrerolls() {
+    public function getPrerolls($options = []) {
 
         $this->db->select('p.*, pt.preroll_type_name, pt.preroll_type_description, ps.preroll_series_name');
         $this->db->from('prerolls p');
         $this->db->join('preroll_type pt', 'p.preroll_type_id=pt.id', 'left outer');
         $this->db->join('preroll_series ps', 'preroll_series_id=ps.id', 'left outer');
+        if (isset($options['seriesId'])) {
+            $this->db->where('preroll_series_id', $options['seriesId']);
+        }
+        if (isset($options['typeId'])) {
+            $this->db->where('preroll_type_id', $options['typeId']);
+        }
 
         $result = $this->db->get();
 
         return $result->result_array();
     }
-    
+
     public function getPrerollById($id) {
 
         $this->db->select('p.*, pt.preroll_type_name, pt.preroll_type_description, ps.preroll_series_name');
@@ -207,8 +231,35 @@ class FilmModel extends MY_Model {
         return $result->result_array();
     }
 
+
+    public function getGenresForFilm($filmId) {
+
+        $this->db->select('genre_id, genre');
+        $this->db->from('map_genre_film');
+        $this->db->where('film_id', $filmId);
+        $this->db->join('genres g', 'genre_id=g.id');
+
+        $result = $this->db->get();
+
+        return $result->result_array();
+    }
+
+
+    public function getSubgenresForFilm($filmId) {
+
+        $this->db->select('subgenre_id, subgenre');
+        $this->db->from('map_subgenre_film');
+        $this->db->where('film_id', $filmId);
+        $this->db->join('subgenres sg', 'subgenre_id = sg.id');
+
+        $result = $this->db->get();
+
+        return $result->result_array();
+    }
+
+
     public function featureSearch($search) {
-        
+
         $genreFilms = [];
         if ($search['selected']['genre'] == true) {
             $tempFilms = $this->getFilmsForGenres($search['criteria']['genreId']);
@@ -229,7 +280,7 @@ class FilmModel extends MY_Model {
 
         // todo only do an intersect IF the arrays are populated
         $finalFilmIds = array_intersect($genreFilms, $subgenreFilms);
-        
+
         return array_values($finalFilmIds);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Preroll extends MY_Controller {
+class Film extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -19,32 +19,40 @@ class Preroll extends MY_Controller {
     public function manage() {
         $data = $this->starterData;
 
-        $seriesId = $this->input->get('seriesId');
-        $typeId = $this->input->get('typeId');
+        $genreId = $this->input->get('genreId');
+        $subgenreId = $this->input->get('subgenreId');
 
         $options = [
-            'seriesId' => $seriesId,
-            'typeId' => $typeId,
+            'genreId' => $genreId,
+            'subgenreId' => $subgenreId,
+            'orderBy' => ['field' => 'title', 'direction' => 'asc'],
         ];
 
-        $data['prerolls'] = $this->filmmodel->getPrerolls($options);
-        
-        $data['title'] = "Prerolls (" . count($data['prerolls']) . ")";
+        $data['films'] = $this->filmmodel->getFilms($options);
+
+        foreach ($data['films'] as &$film) {
+            $genres = $this->filmmodel->getGenresForFilm($film['id']);
+            $film['genres'] = $genres;
+
+            $subgenres = $this->filmmodel->getSubgenresForFilm($film['id']);
+            $film['subgenres'] = $subgenres;
+        }
+
+        $data['title'] = "Films (" . count($data['films']) . ")";
 
         $this->load->view('partials/template-header', $data);
-        $this->load->view('preroll/v_manage');
+        $this->load->view('film/v_manage');
         $this->load->view('partials/template-footer', $data);
     }
 
-    public function edit($prerollId) {
+    public function edit($filmId) {
         $data = $this->starterData;
 
-        $data['preroll'] = $this->filmmodel->getPrerollById($prerollId);
-        $data['prerollTypes'] = $this->filmmodel->getPrerollTypes();
-        $data['prerollSeries'] = $this->filmmodel->getPrerollSeries();
+        $data['film'] = $this->filmmodel->getFilmById($filmId);
+
 
         $this->load->view('partials/template-header', $data);
-        $this->load->view('preroll/v_edit');
+        $this->load->view('film/v_edit');
         $this->load->view('partials/template-footer', $data);
     }
 

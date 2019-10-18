@@ -211,7 +211,12 @@ class Admin extends MY_Controller {
         $_POST = Utility::getPost();
 //Utility::debug($this->input->post('numFilms'), false);
 //Utility::debug($this->input->post('offset'), false);
-        $movies = $this->filmmodel->getFilms($this->input->post('numFilms'), $this->input->post('offset'));
+        $options = [
+            "limit" => $this->input->post('numFilms'),
+            "offset" => $this->input->post('offset'),
+        ];
+
+        $movies = $this->filmmodel->getFilms($options);
         foreach ($movies as $k=>$movie) {
             
             $movieSubgenres = Utility::getMovieSubgenres($movie['imdbId']);
