@@ -48,21 +48,31 @@ CREATE TABLE IF NOT EXISTS "settings" (
     `last_updated`  TIMESTAMP DEFAULT current_timestamp,
     `description`   text,
     `sort_order`    integer,
-    `setting_slug`  TEXT
+    `setting_slug`  TEXT,
+    `widget_type` TEXT DEFAULT 'text',
+    `conditional` TEXT DEFAULT null
 );
 
-INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug)
-VALUES('URL', '', 'URL for Sinema (not used)', 1, 'url');
+INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug, widget_type, conditional)
+VALUES('URL', '', 'URL for Sinema (not used)', 1, 'url', 'text', null);
 
-INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug)
-VALUES('Kept Subgenres', 'Giallo; Slasher; Revenge; Women In Prison; Prison; Pinky Violence; Western;', 'List of Subgenre that you want to keep separated by ;', 500, 'kept-subgenres');
+INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug, widget_type, conditional)
+VALUES('Kept Subgenres', 'Giallo; Slasher; Revenge; Women In Prison; Prison; Pinky Violence; Western;', 'List of Subgenre that you want to keep separated by ;', 500, 'kept-subgenres', 'text', null);
 
-INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug)
-VALUES('Plex Url','','The URL for the plex server in the format "http://<url:port>"',100,'plex-url');
+INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug, widget_type, conditional)
+VALUES('Plex Url','','The URL for the plex server in the format "http://<url:port>"',100,'plex-url', 'text', null);
 
-INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug)
-VALUES('Plex API Token', '', 'The API token of your plex server', 200, 'plex-api-token');
+INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug, widget_type, conditional)
+VALUES('Plex API Token', '', 'The API token of your plex server', 200, 'plex-api-token', 'text', null);
 
+INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug, widget_type, conditional)
+VALUES('Enable Plex', '1', 'Enable Plex Integration (not implemented)', 600, 'enable-plex', 'checkbox', null);
+
+INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug, widget_type, conditional)
+VALUES('Enable Prerolls', '1', 'To enable preroll support', 700, 'enable-prerolls', 'checkbox', null);
+
+INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug, widget_type, conditional)
+VALUES('Enable Trailers', '1', 'To enable trailers in the system', 800, 'enable-trailers', 'checkbox', null);
 
 CREATE TABLE `countries` (
     `id`    INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,

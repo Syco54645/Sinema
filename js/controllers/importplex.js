@@ -26,7 +26,7 @@ Sinema.controller('ImportPlexController', ['$scope', '$location', '$http', funct
     $scope.model.importing = true;
 
     var promise = $http({
-      url: '/admin/ajaxImportPlex/' + $scope.model.step +'/',
+      url: '/ajax/import-plex/' + $scope.model.step +'/',
       method: "POST",
       data: submitData
     });

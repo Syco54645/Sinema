@@ -58,9 +58,10 @@ $route['past'] = 'grindhouse/past';
 $route['calendar'] = 'grindhouse/calendar';
 
 $route['admin'] = 'admin';
-$route['admin/import-plex'] = 'admin/import_plex';
-$route['ajax/import-plex']['post'] = 'admin/ajaxImportPlex';
-$route['admin-settings'] = 'admin/settings';
+$route['admin/import-plex'] = 'importplex/import_plex';
+$route['ajax/import-plex/(:num)'] = 'importplex/ajaxImportPlex/$1';
+$route['admin/settings'] = 'admin/settings';
+$route['ajax/save-settings'] = 'admin/ajaxSaveSettings';
 
 $route['admin/prerolls'] = 'preroll/manage';
 $route['admin/prerolls/edit/(:num)'] = 'preroll/edit/$1';

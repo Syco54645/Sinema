@@ -75,5 +75,5 @@ Follow the Installation guide above.
 * active route highlight in navbar
 * make create search work with tighter genre requirements (dont use where in but rather a bunch of wehere)
 * ~fix base model~
-* clean up flashdata
+* clean up flashdata - started on this with angular libray
 * some sort of branding

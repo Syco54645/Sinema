@@ -27,7 +27,7 @@
                 </a>
                 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/admin/import_plex" ng-if="viewVars.me.login">Import From Plex</a>
+                    <a class="dropdown-item" href="/admin/import-plex" ng-if="viewVars.me.login">Import From Plex</a>
                     <a class="dropdown-item" href="/admin/films" ng-if="viewVars.me.login">Manage Films</a>
                     <a class="dropdown-item" href="/admin/prerolls" ng-if="viewVars.me.login">Manage Prerolls</a>
                     <a class="dropdown-item" href="/admin/trailers" ng-if="viewVars.me.login">Manage Trailer</a>
