@@ -17,7 +17,7 @@ class ImportPlex extends MY_Controller {
         $this->load->model('FilmModel', 'filmmodel');
         $this->load->model('SettingsModel', 'settingsmodel');
         
-        $this->plexApiToken = $this->settingsmodel->getSettingBySlug('plex-api-token');
+        $this->plexApiToken = $this->config->item('sinemaSettings')['plex-api-token'];
     }
 
     public function import_plex() {
@@ -25,7 +25,7 @@ class ImportPlex extends MY_Controller {
         $data['title'] = "Import Collection From Plex";
         
         $this->load->model('SettingsModel');
-        $plexApiKey = $this->SettingsModel->getSettingValueByName("Plex API Token");
+        $plexApiKey = $this->config->item('sinemaSettings')['plex-api-token'];
 
         $service_url = sprintf(Utility::getPlexUrl("all-libraries"), $plexApiKey);
 
@@ -218,7 +218,7 @@ class ImportPlex extends MY_Controller {
 
         $this->load->model('SettingsModel');
 
-        $plexApiKey = $this->SettingsModel->getSettingValueByName("Plex API Token");
+        $plexApiKey = $this->config->item('sinemaSettings')['plex-api-token'];
         $_POST = Utility::getPost();
         $type = $this->input->post('type');
         $libraryId = $this->input->post('libraryId');

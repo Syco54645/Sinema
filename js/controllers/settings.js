@@ -31,6 +31,7 @@ Sinema.controller('SettingsController', ['$scope', '$location', '$http', 'Flash'
       if (data.status == "success") {
         var message = 'Settings Saved Successfully.';
         Flash.create('success', message, 0, {class: 'custom-class', id: 'custom-id'}, true);
+        viewVars.sinemaSettings = data.sinemaSettings;
       }
     });
 

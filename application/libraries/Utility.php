@@ -130,6 +130,21 @@ class Utility {
         return $movieSubgenres;
     }
 
+    public static function getSettings() {
+        $CI =& get_instance();
+        $CI->load->model('SettingsModel');
+
+        $settings = $CI->SettingsModel->getSettings();
+
+        $saneSettings = [];
+        foreach ($settings as $setting) {
+            $saneSettings[$setting['setting_slug']] = $setting['setting_value'];
+        }
+
+        return $saneSettings;
+
+    }
+
     public static function getPost() {
         // really starting to doubt my decision of using CI at this point...
         // fix found here https://www.itsolutionstuff.com/post/codeigniter-angularjs-http-post-not-workingexample.html

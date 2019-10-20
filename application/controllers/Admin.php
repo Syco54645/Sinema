@@ -94,7 +94,8 @@ class Admin extends MY_Controller {
                 $this->settingsmodel->saveSetting($setting, $settingValue);
             }
             $this->session->set_flashdata('success', 'Settings Updated Successfully');
-            echo json_encode(['status' => 'success']);
+            $sinemaSettings = $this->updateSinemaSettings();
+            echo json_encode(['status' => 'success', 'sinemaSettings' => $sinemaSettings]);
         }
     }
 

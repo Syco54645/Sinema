@@ -27,10 +27,10 @@
                 </a>
                 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/admin/import-plex" ng-if="viewVars.me.login">Import From Plex</a>
+                    <a class="dropdown-item" href="/admin/import-plex" ng-if="viewVars.me.login && viewVars.sinemaSettings['enable-plex'] != '0'">Import From Plex</a>
                     <a class="dropdown-item" href="/admin/films" ng-if="viewVars.me.login">Manage Films</a>
-                    <a class="dropdown-item" href="/admin/prerolls" ng-if="viewVars.me.login">Manage Prerolls</a>
-                    <a class="dropdown-item" href="/admin/trailers" ng-if="viewVars.me.login">Manage Trailer</a>
+                    <a class="dropdown-item" href="/admin/prerolls" ng-if="viewVars.me.login && viewVars.sinemaSettings['enable-prerolls'] != '0'">Manage Prerolls</a>
+                    <a class="dropdown-item" href="/admin/trailers" ng-if="viewVars.me.login && viewVars.sinemaSettings['enable-trailers'] != '0'">Manage Trailer</a>
                     <div class="dropdown-divider" ng-if="viewVars.me.login"></div>
                     <a class="dropdown-item" href="/admin/settings" ng-if="viewVars.me.login">Settings</a>
                     <a class="dropdown-item" href="/admin/logout" ng-if="viewVars.me.login">Logout</a>
