@@ -19,6 +19,7 @@
                                 ng-false-value="'0'"
                                 id="{{ setting.setting_slug }}"
                                 ng-if="setting.widget_type == 'checkbox'"
+                                ng-disabled="isFieldDisabled(setting)"
                             />
                             {{ setting.setting_name }}
                         </label>
@@ -29,6 +30,7 @@
                         type="text"
                         ng-model="model.settings[setting.setting_slug]"
                         ng-if="setting.widget_type == 'text'"
+                        ng-disabled="isFieldDisabled(setting)"
                     />
                     <selectize
                         config="selectizeConfigs[setting.setting_slug]"

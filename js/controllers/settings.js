@@ -1,4 +1,4 @@
-Sinema.controller('SettingsController', ['$scope', '$location', '$http', 'Flash', function($scope, $location, $http, Flash) {
+Sinema.controller('SettingsController', ['$scope', '$location', '$http', 'Flash', '$window', function($scope, $location, $http, Flash, $window) {
 
   $scope.model = {
     settings: {},
@@ -21,6 +21,15 @@ Sinema.controller('SettingsController', ['$scope', '$location', '$http', 'Flash'
     'kept-subgenres': viewVars.keptSubgenresArray,
   };
 
+  $scope.isFieldDisabled = function (setting) {
+    if (setting.conditional) {
+      // this is shitty but works for what i need right now. will need expanded. FIXME
+      if ($scope.model.settings[setting.conditional] == '0') {
+        return true;
+      }
+    }
+  }
+
   var initData = function () {
     for(var i = 0; i < viewVars.settings.length; i++) {
       var setting = viewVars.settings[i];
@@ -31,6 +40,7 @@ Sinema.controller('SettingsController', ['$scope', '$location', '$http', 'Flash'
   $scope.save = function () {
 
     // convert kept subgenres to a string separated by ;
+    Flash.clear();
     $scope.model.settings['kept-subgenres'] = $scope.selectizeModels['kept-subgenres'].join(';');
     var submitData = {
       settings: $scope.model.settings,
@@ -47,6 +57,7 @@ Sinema.controller('SettingsController', ['$scope', '$location', '$http', 'Flash'
       if (data.status == "success") {
         var message = 'Settings Saved Successfully.';
         Flash.create('success', message, 0, {class: 'custom-class', id: 'custom-id'}, true);
+        $window.scrollTo(0, 0);
         viewVars.sinemaSettings = data.sinemaSettings;
       }
     });
