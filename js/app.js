@@ -1,4 +1,4 @@
-var ngModules = ['angular.filter', 'ngFlash'];
+var ngModules = ['angular.filter', 'ngFlash', 'selectize'];
 var Sinema = angular.module('Sinema', ngModules);
 
 Sinema.controller('RootController', ['$rootScope', '$http', '$timeout', '$scope', function($rootScope, $http, $timeout, $scope) {

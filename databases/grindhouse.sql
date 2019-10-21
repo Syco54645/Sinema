@@ -24,21 +24,21 @@ CREATE TABLE `genres` (
     `genre_slug`    TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE `subgenres` ( 
+CREATE TABLE `subgenres` (
     `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    `subgenre` TEXT NOT NULL UNIQUE, `subgenre_slug` TEXT NOT NULL UNIQUE 
+    `subgenre` TEXT NOT NULL UNIQUE, `subgenre_slug` TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE `map_genre_film` ( 
+CREATE TABLE `map_genre_film` (
     `film_id` INTEGER NOT NULL,
     `genre_id` INTEGER NOT NULL,
     PRIMARY KEY(`film_id`,`genre_id`)
 );
 
-CREATE TABLE `map_subgenre_film` ( 
-    `film_id` INTEGER NOT NULL, 
-    `subgenre_id` INTEGER NOT NULL, 
-    PRIMARY KEY(`film_id`,`subgenre_id`) 
+CREATE TABLE `map_subgenre_film` (
+    `film_id` INTEGER NOT NULL,
+    `subgenre_id` INTEGER NOT NULL,
+    PRIMARY KEY(`film_id`,`subgenre_id`)
 );
 
 CREATE TABLE IF NOT EXISTS "settings" (
@@ -57,7 +57,7 @@ INSERT INTO settings(setting_name, setting_value, description, sort_order, setti
 VALUES('URL', '', 'URL for Sinema (not used)', 1, 'url', 'text', null);
 
 INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug, widget_type, conditional)
-VALUES('Kept Subgenres', 'Giallo; Slasher; Revenge; Women In Prison; Prison; Pinky Violence; Western;', 'List of Subgenre that you want to keep separated by ;', 500, 'kept-subgenres', 'text', null);
+VALUES('Kept Subgenres', 'Giallo;Slasher;Revenge;Women In Prison;Prison;Pinky Violence;Western', 'List of Subgenre that you want to keep. These are separated by ; in the database.', 500, 'kept-subgenres', 'selectize', null);
 
 INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug, widget_type, conditional)
 VALUES('Plex Url','','The URL for the plex server in the format "http://<url:port>"',100,'plex-url', 'text', null);
@@ -133,11 +133,11 @@ CREATE TABLE IF NOT EXISTS "prerolls" (
     PRIMARY KEY(`id`)
 );
 
-CREATE TABLE `preroll_series` ( 
-    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, 
-    `preroll_series_name` TEXT NOT NULL, 
-    `preroll_series_slug` TEXT NOT NULL, 
-    `active` INTEGER DEFAULT 1 
+CREATE TABLE `preroll_series` (
+    `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    `preroll_series_name` TEXT NOT NULL,
+    `preroll_series_slug` TEXT NOT NULL,
+    `active` INTEGER DEFAULT 1
 )
 
 COMMIT;

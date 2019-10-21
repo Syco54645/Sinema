@@ -16,7 +16,7 @@ class Admin extends MY_Controller {
         }
         $this->load->model('FilmModel', 'filmmodel');
         $this->load->model('SettingsModel', 'settingsmodel');
-        
+
         $this->plexApiToken = $this->settingsmodel->getSettingBySlug('plex-api-token');
     }
 
@@ -52,7 +52,7 @@ class Admin extends MY_Controller {
             $username = $this->input->post('username');
             $password = $this->input->post('password');
             $user = $this->auth->loginUser($username, $password);
-            
+
             if ($user !== null){
                 $this->session->set_userdata($user);
                 $this->session->set_userdata('login', 'true');
@@ -79,6 +79,14 @@ class Admin extends MY_Controller {
         $data['title'] = "Settings";
 
         $settings = $this->settingsmodel->getSettings();
+        foreach ($settings as $i => $setting) {
+            if ($setting['setting_slug'] == 'kept-subgenres') {
+                $keptSubgenres = $settings[$i]['setting_value'];
+                $keptSubgenresArray = array_map('trim', explode(';', $keptSubgenres));
+                $settings[$i]['setting_value'] = $keptSubgenresArray;
+                $data['keptSubgenresArray'] = $keptSubgenresArray;
+            }
+        }
         $data['settings'] = $settings;
 
         $this->load->view('partials/template-header', $data);
@@ -99,7 +107,7 @@ class Admin extends MY_Controller {
         }
     }
 
-    
+
 
     /*public function do_import_plex($step=1) {
 
@@ -145,7 +153,7 @@ class Admin extends MY_Controller {
             } else {
                 $movie['imdbId'] = null;
             }
-            
+
             $movie['country'] = null;
             if (isset($video['Country'])) {
                 $movie['country'] = [];
@@ -235,7 +243,7 @@ class Admin extends MY_Controller {
             Utility::debug(json_decode($output), false);
             if (json_decode($output)) {
                 $allSubGenre = array_merge($allSubGenre, json_decode($output));
-            }            
+            }
         }
         Utility::debug(array_unique($allSubGenre), true);
         $data = self::adminData();

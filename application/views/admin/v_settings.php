@@ -30,6 +30,14 @@
                         ng-model="model.settings[setting.setting_slug]"
                         ng-if="setting.widget_type == 'text'"
                     />
+                    <selectize
+                        config="selectizeConfigs[setting.setting_slug]"
+                        id="{{ setting.setting_slug }}"
+                        name="{{ setting.setting_slug }}"
+                        ng-model="selectizeModels[setting.setting_slug]"
+                        ng-if="setting.widget_type == 'selectize'"
+                    ></selectize>
+
                     <p>
                         <span class="help-block">{{ setting.description }}</span>
                     </p>
@@ -48,6 +56,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
