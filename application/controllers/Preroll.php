@@ -14,6 +14,7 @@ class Preroll extends MY_Controller {
             redirect('/admin/login');
         }
         $this->load->model('FilmModel', 'filmmodel');
+        $this->load->model('PrerollModel', 'prerollmodel');
     }
 
     public function manage() {
@@ -27,8 +28,8 @@ class Preroll extends MY_Controller {
             'typeId' => $typeId,
         ];
 
-        $data['prerolls'] = $this->filmmodel->getPrerolls($options);
-        
+        $data['prerolls'] = $this->prerollmodel->getPrerolls($options);
+
         $data['title'] = "Prerolls (" . count($data['prerolls']) . ")";
 
         $this->load->view('partials/template-header', $data);
@@ -39,9 +40,9 @@ class Preroll extends MY_Controller {
     public function edit($prerollId) {
         $data = $this->starterData;
 
-        $data['preroll'] = $this->filmmodel->getPrerollById($prerollId);
-        $data['prerollTypes'] = $this->filmmodel->getPrerollTypes();
-        $data['prerollSeries'] = $this->filmmodel->getPrerollSeries();
+        $data['preroll'] = $this->prerollmodel->getPrerollById($prerollId);
+        $data['prerollTypes'] = $this->prerollmodel->getPrerollTypes();
+        $data['prerollSeries'] = $this->prerollmodel->getPrerollSeries();
 
         $this->load->view('partials/template-header', $data);
         $this->load->view('preroll/v_edit');
@@ -54,8 +55,8 @@ class Preroll extends MY_Controller {
             $qd = $_POST;
             $id = $this->input->post('id');
             unset($qd['id']);
-            
-            $this->filmmodel->updatePreroll($id, $qd);
+
+            $this->prerollmodel->updatePreroll($id, $qd);
 
             $this->session->set_flashdata('success', 'Preroll Updated Successfully');
             echo json_encode(['status' => 'success']);

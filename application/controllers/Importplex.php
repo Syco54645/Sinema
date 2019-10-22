@@ -16,20 +16,22 @@ class ImportPlex extends MY_Controller {
         }
         $this->load->model('FilmModel', 'filmmodel');
         $this->load->model('SettingsModel', 'settingsmodel');
-        
-        $this->plexApiToken = $this->config->item('sinemaSettings')['plex-api-token'];
+        $this->load->model('PrerollModel', 'prerollmodel');
+
+        $this->plexApiToken = $this->config->sinemaSettings['plex-api-token'];
     }
 
     public function import_plex() {
         $data = $this->starterData;;
         $data['title'] = "Import Collection From Plex";
-        
+
         $this->load->model('SettingsModel');
-        $plexApiKey = $this->config->item('sinemaSettings')['plex-api-token'];
+        $plexApiKey = $this->config->sinemaSettings['plex-api-token'];
 
         $service_url = sprintf(Utility::getPlexUrl("all-libraries"), $plexApiKey);
 
         $get_data = $this->filmmodel->callAPI('GET', $service_url, false);
+
         $libraries = json_decode($get_data, TRUE);
         $formattedLibraries = [];
         foreach ($libraries["MediaContainer"]["Directory"] as $library) {
@@ -47,7 +49,7 @@ class ImportPlex extends MY_Controller {
     }
 
     private function _plex_movie_step_one($service_url) {
-        /* 
+        /*
         ** insert movies
         ** insert genres
         ** link movies to genres
@@ -66,13 +68,13 @@ class ImportPlex extends MY_Controller {
             $movie['thumb'] = isset($video['thumb']) ? $video['thumb'] : null;
             $movie['art'] = isset($video['art']) ? $video['art'] : null;
             $movie['guid'] = isset($video['guid']) ? $video['guid'] : null;
-            
+
             if (isset($video['guid'])) {
                 $movie['imdbId'] = Utility::getImdbId($video['guid']);
             } else {
                 $movie['imdbId'] = null;
             }
-            
+
             $movie['country'] = null;
             if (isset($video['Country'])) {
                 $movie['country'] = [];
@@ -146,7 +148,7 @@ class ImportPlex extends MY_Controller {
 
         $movies = $this->filmmodel->getFilms($options);
         foreach ($movies as $k=>$movie) {
-            
+
             $movieSubgenres = Utility::getMovieSubgenres($movie['imdbId']);
 //Utility::debug($movie['imdbId'], false);
 
@@ -173,7 +175,7 @@ class ImportPlex extends MY_Controller {
     }
 
     private function _plex_preroll_step_one($service_url) {
-        /* 
+        /*
         ** insert movies
         ** insert genres
         ** link movies to genres
@@ -189,7 +191,7 @@ class ImportPlex extends MY_Controller {
             $preroll['thumb'] = isset($video['thumb']) ? $video['thumb'] : null;
             $preroll['art'] = isset($video['art']) ? $video['art'] : null;
             $preroll['guid'] = isset($video['guid']) ? $video['guid'] : null;
-            
+
             $preroll['thumbUrl'] = Utility::getPlexThumbnailUrl($preroll['thumb'], $this->plexApiToken);
             $preroll['artUrl'] = Utility::getPlexThumbnailUrl($preroll['art'], $this->plexApiToken);
             /*echo '<img src="' . $preroll['thumbUrl'] . '" />';
@@ -206,8 +208,8 @@ class ImportPlex extends MY_Controller {
             ];
 
             // insert the film if it doesnt exist
-            if ($this->filmmodel->checkPrerollExists($preroll['id']) === 0) {
-                $this->filmmodel->storePreroll($qd);
+            if ($this->prerollmodel->checkPrerollExists($preroll['id']) === 0) {
+                $this->prerollmodel->storePreroll($qd);
             }
         }
         // todo add something so that we know if it fails
@@ -218,7 +220,7 @@ class ImportPlex extends MY_Controller {
 
         $this->load->model('SettingsModel');
 
-        $plexApiKey = $this->config->item('sinemaSettings')['plex-api-token'];
+        $plexApiKey = $this->config->sinemaSettings['plex-api-token'];
         $_POST = Utility::getPost();
         $type = $this->input->post('type');
         $libraryId = $this->input->post('libraryId');
