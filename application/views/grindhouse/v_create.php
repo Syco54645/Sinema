@@ -19,14 +19,14 @@
 
                 <div class="row">
                     <div class="col-md-4 col-sm-6 col-xs-12">
-                        
+
                         <div class="form-group ">
                             <label class="control-label " for="genre">
-                                <input name="genre" id="genre" type="checkbox" ng-change="toggleGenre()" ng-model="model.search.selected.genre" />
+                                <input name="genre" id="genre" type="checkbox" ng-model="model.search.selected.genre" />
                                 Genre
                             </label>
                             <div class="genre-wrapper" ng-class="{ disabled: !model.search.selected.genre }" >
-                                
+
                                 <div class="row" ng-repeat="genres in viewVars.genres | chunkBy:4">
                                     <div class="col-md-3 letter-box" ng-repeat="genre in genres" >
                                         <label class="checkbox genre-checkbox">
@@ -41,10 +41,11 @@
 
                         <div class="form-group ">
                             <label class="control-label " for="subgenre">
-                                <input name="subgenre" id="subgenre" type="checkbox" ng-change="toggleGenre()" ng-model="model.search.selected.subgenre" />
+                                <input name="subgenre" id="subgenre" type="checkbox" ng-model="model.search.selected.subgenre" />
                                 Subgenre
                             </label>
                             <div class="subgenre-wrapper" ng-class="{ disabled: !model.search.selected.subgenre }" >
+
                                 <div class="row" ng-repeat="subgenres in viewVars.subgenres | chunkBy:4">
                                     <div class="col-md-3 letter-box" ng-repeat="subgenre in subgenres" >
                                         <label class="checkbox subgenre-checkbox">
@@ -57,6 +58,31 @@
                             </div>
                         </div>
 
+                        <div class="form-group " ng-if="viewVars.sinemaSettings['enable-prerolls'] == '1'">
+                            <label class="control-label " for="prerolls">
+                                <input name="prerolls" id="prerolls" type="checkbox" ng-model="model.search.selected.prerolls" />
+                                Prerolls
+                            </label>
+                            <div class="preroll-wrapper" ng-class="{ disabled: !model.search.selected.prerolls }">
+
+                                <label class="control-label " for="stayInSeries">
+                                    <input name="stayInSeries" id="stayInSeries" type="checkbox" ng-model="model.search.criteria.prerolls.stayInSeries" ng-disabled="!model.search.selected.prerolls" />
+                                    Preferred Series
+                                </label>
+
+                                <label class="control-label " for="series">
+                                   Series
+                                </label>
+                                <select class="select form-control"
+                                    name="series"
+                                    id="series"
+                                    ng-options="prerollSeries.id as prerollSeries.preroll_series_name for prerollSeries in viewVars.prerollSeries track by prerollSeries.id"
+                                    ng-model="model.search.criteria.prerolls.selectedSeries"
+                                    ng-disabled="!model.search.selected.prerolls || !model.search.criteria.prerolls.stayInSeries"
+                                ></select>
+
+                            </div>
+                        </div>
 
 
                         <div class="form-group">

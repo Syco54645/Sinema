@@ -22,7 +22,8 @@
   border-color: #1a7a12; }
 
 .genre-wrapper.disabled,
-.subgenre-wrapper.disabled {
+.subgenre-wrapper.disabled,
+.preroll-wrapper.disabled {
   background-color: #ccc; }
 
 .preroll-image,

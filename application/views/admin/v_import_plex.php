@@ -42,7 +42,7 @@
                         <div class="step">
                             <div class="step-number">Step 1</div>
                             <div class="step-desc">
-                                This step is fairly simple. We are going to use the Plex Access Token that you supplied to connect to your Plex library. 
+                                This step is fairly simple. We are going to use the Plex Access Token that you supplied to connect to your Plex library.
                                 We will then begin to pull in the items in the specified library and store information needed to create the features.
                             </div>
                         </div>
@@ -56,8 +56,8 @@
                             <select class="form-control" name="import-type" id="import-type" ng-model="model.importType">
                                 <option>--------</option>
                                 <option value="movie">Movies</option>
-                                <option value="preroll">Prerolls</option>
-                                <option value="trailer">Trailers</option>
+                                <option value="preroll" ng-if="viewVars.sinemaSettings['enable-prerolls'] == '1'">Prerolls</option>
+                                <option value="trailer" ng-if="viewVars.sinemaSettings['enable-trailers'] == '1'">Trailers</option>
                             </select>
                         </div>
                         <div class="form-group ">
@@ -86,8 +86,8 @@
                         <div class="step">
                             <div class="step-number">Step 2</div>
                             <div class="step-desc">
-                                This step is more complex. We have to pull subgenre from IMDB via an API. We can batch this in about 30 at a time safely. 
-                                You can tweak this number in settings but eventually you will get to a point where the script fails to run. 
+                                This step is more complex. We have to pull subgenre from IMDB via an API. We can batch this in about 30 at a time safely.
+                                You can tweak this number in settings but eventually you will get to a point where the script fails to run.
                                 The application will continue to the next step automatically.
                             </div>
                         </div>

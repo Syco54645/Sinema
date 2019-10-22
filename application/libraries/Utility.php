@@ -1,4 +1,4 @@
-<?php 
+<?php
 class Utility {
 
     public static function lastQuery($die=true, $backtrace=true) {
@@ -6,7 +6,7 @@ class Utility {
             $backtrace = debug_backtrace();
             echo "<b>".$backtrace[0]['file'] . ' on ' . $backtrace[0]['line']."</b><br/><br/>";
         }
-        
+
         $CI =& get_instance();
         echo $CI->db->last_query();
         if ($die) {
@@ -96,7 +96,7 @@ class Utility {
     public static function splitSemiColon($string) {
 
         $splitted = explode(";", trim($string));
-        $splitted = array_map('trim', $splitted); 
+        $splitted = array_map('trim', $splitted);
         return array_filter($splitted);
     }
 
@@ -117,7 +117,7 @@ class Utility {
         foreach ($movieSubgenres as $subgenre) {
             if (in_array(Utility::slugify($subgenre), $keptSubgenres)) {
                 $newSubgenres[] = Utility::slugify($subgenre);
-            }            
+            }
         }
         return $newSubgenres;
     }
@@ -143,6 +143,11 @@ class Utility {
 
         return $saneSettings;
 
+    }
+
+    public static function checkSettingEnabled($slug) {
+        $CI =& get_instance();
+        return $CI->config->sinemaSettings[$slug] == "1";
     }
 
     public static function getPost() {

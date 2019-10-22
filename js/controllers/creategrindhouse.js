@@ -6,12 +6,22 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
         selected: {
             genre: true,
             subgenre: true,
+            prerolls: true,
+            trailers: true,
         },
         criteria: {
             genre: [],
             genreId: [],
             subgenre: [],
             subgenreId: [],
+            prerolls: {
+                stayInSeries: true,
+                selectedSeries: 'color-swirl',
+            },
+            trailers: {
+                adult: true,
+                number: 5,
+            }
         },
     },
   };

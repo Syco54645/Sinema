@@ -1,8 +1,8 @@
 Sinema.controller('ImportPlexController', ['$scope', '$location', '$http', function($scope, $location, $http) {
 
   $scope.model = {
-    importType: 'preroll',
-    libraryId: 22,
+    importType: '--------',
+    libraryId: null,
     importing: false,
     step: 1,
     numFilmsToBulkProcess: 30,

@@ -11,13 +11,13 @@ class MY_Controller extends CI_Controller {
         $method = $this->router->fetch_method();
         $this->starterData['currentRoute'] = $controller . "-" . $method;
         $this->load->model('SettingsModel', 'settingsmodel');
-        if (empty($this->config->cinemaApplicationSettings)) {
-            $this->config->cinemaApplicationSettings = $this->settingsmodel->getSettings();
+        if (empty($this->config->sinemaApplicationSettings)) {
+            $this->config->sinemaApplicationSettings = $this->settingsmodel->getSettings();
         }
 
         $sinemaSettings = $this->updateSinemaSettings();
         $this->starterData['sinemaSettings'] = $sinemaSettings['viewSafeSinemaSettings'];
-        $this->config->set_item('sinemaSettings', $sinemaSettings['allSinemaSettings']);
+        $this->config->sinemaSettings = $sinemaSettings['allSinemaSettings'];
     }
 
     public static function updateSinemaSettings($forView = false) {
