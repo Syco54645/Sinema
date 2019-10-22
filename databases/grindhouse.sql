@@ -14,8 +14,16 @@ CREATE TABLE IF NOT EXISTS "films" (
     `imdbId`    TEXT DEFAULT null,
     `thumbUrl`  TEXT DEFAULT null,
     `artUrl`    TEXT DEFAULT null,
-    `active` INTEGER DEFAULT 1
+    `active` INTEGER DEFAULT 1,
+    `library_id` INTEGER DEFAULT null
     PRIMARY KEY(`id`)
+);
+
+CREATE TABLE `libraries` (
+    `id`    INTEGER UNIQUE,
+    `library_name`  TEXT NOT NULL,
+    `library_name_slug` TEXT NOT NULL,
+    `library_type`  TEXT NOT NULL
 );
 
 CREATE TABLE `genres` (

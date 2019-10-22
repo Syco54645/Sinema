@@ -43,12 +43,14 @@ class ImportPlex extends MY_Controller {
         }
         $data['formattedLibraries'] = $formattedLibraries;
 
+        $data['libraries'] = $this->filmmodel->getLibraryAliases();
+
         $this->load->view('partials/template-header', $data);
         $this->load->view('admin/v_import_plex', $data);
         $this->load->view('partials/template-footer', $data);
     }
 
-    private function _plex_movie_step_one($service_url) {
+    private function _plex_movie_step_one($service_url, $libraryId) {
         /*
         ** insert movies
         ** insert genres
@@ -108,11 +110,14 @@ class ImportPlex extends MY_Controller {
                 'imdbId' => $movie['imdbId'],
                 'thumbUrl' => $movie['thumbUrl'],
                 'artUrl' => $movie['artUrl'],
+                'library_id' => $libraryId,
             ];
 
             // insert the film if it doesnt exist
             if ($this->filmmodel->checkFilmExists($movie['id']) === 0) {
                 $this->filmmodel->storeFilm($qd);
+            } else {
+                $this->filmmodel->updateFilm($movie['id'], $qd);
             }
 
             if ($movie['genre'] != null) {
@@ -224,7 +229,17 @@ class ImportPlex extends MY_Controller {
         $_POST = Utility::getPost();
         $type = $this->input->post('type');
         $libraryId = $this->input->post('libraryId');
+        $libraryAlias = $this->input->post('libraryAlias') ? $this->input->post('libraryAlias') : null;
 
+        if ($libraryAlias != null) {
+            $qd = [
+                'id' => $libraryId,
+                'library_name' => $libraryAlias,
+                'library_name_slug' => Utility::slugify($libraryAlias),
+                'library_type' => $type,
+            ];
+            $this->filmmodel->insertLibraryAlias($qd);
+        }
         switch ($type) {
             case 'preroll':
                 $service_url = sprintf(Utility::getPlexUrl("library"), $libraryId, $plexApiKey);
@@ -235,7 +250,7 @@ class ImportPlex extends MY_Controller {
             case 'movie':
                 $service_url = sprintf(Utility::getPlexUrl("library"), $libraryId, $plexApiKey);
                 if ($step == 1) {
-                    $response = $this->_plex_movie_step_one($service_url);
+                    $response = $this->_plex_movie_step_one($service_url, $libraryId);
                 } elseif ($step == 2) {
                     $response = $this->_plex_movie_step_two($service_url);
                 }

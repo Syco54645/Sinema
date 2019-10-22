@@ -17,12 +17,12 @@
                             <td>ID</td>
                             <td>Library</td>
                         </tr>
-                        <?php foreach ($formattedLibraries as $library): ?>
-                            <tr>
-                                <td><?php echo $library['id'] ?></td>
-                                <td><?php echo $library['title'] ?></td>
-                            </tr>
-                        <?php endforeach ?>
+
+                        <tr class="plex-library-item" ng-click="clickPlexLibrary(library.id, library.title)" ng-repeat="library in viewVars.formattedLibraries">
+                            <td>{{ library.id }}</td>
+                            <td>{{ library.title }}</td>
+                        </tr>
+
                     </table>
                 </div>
                 <div class="modal-footer">
@@ -51,34 +51,84 @@
 
                 <div class="row">
                     <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="form-group ">
-                            <label class="control-label" for="import-type">Type</label>
-                            <select class="form-control" name="import-type" id="import-type" ng-model="model.importType">
-                                <option>--------</option>
-                                <option value="movie">Movies</option>
-                                <option value="preroll" ng-if="viewVars.sinemaSettings['enable-prerolls'] == '1'">Prerolls</option>
-                                <option value="trailer" ng-if="viewVars.sinemaSettings['enable-trailers'] == '1'">Trailers</option>
-                            </select>
-                        </div>
-                        <div class="form-group ">
-                            <label class="control-label" for="plex-movie-location-id">Plex Movie Library ID</label>
-                            <input class="form-control" id="plex-library-id" name="plex-library-id" type="text" ng-model="model.libraryId" />
-                            <div class="help-block">If you are unsure what your library ID is just click the button.</div>
-                            <button type="button" class="btn btn-green micro" data-toggle="modal" data-target="#plexLibraryModal">
-                                Show Plex Libraries
-                            </button>
-                        </div>
-                        <div class="form-group">
-                            <div>
-                                <button class="btn btn-primary" type="button" ng-click="importMovie(1)" ng-disabled="model.importing">
-                                    Import/Update Movies
-                                </button>
+                        <div class="form-group" id="div_processingMode">
+                            <label class="control-label " for="processingMode">
+                                Import or Update library
+                            </label>
+                            <div class="">
+                                <label class="radio-inline">
+                                    <input name="processingMode" ng-model="model.processingMode" type="radio" value="import" />
+                                    Import New
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="processingMode" ng-model="model.processingMode" type="radio" value="update" />
+                                    Update Existing
+                                </label>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div><!-- step 1 -->
 
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+
+                        <div class="update-mode-wrapper" ng-if="model.processingMode == 'update'">
+                            <div class="form-group">
+                                <label class="control-label " for="type">
+                                   Type
+                                </label>
+                                <select class="select form-control"
+                                    name="type"
+                                    id="libraryId"
+                                    ng-options="library.id as library.library_name for library in viewVars.libraries"
+                                    ng-model="model.libraryId"
+                                    ng-change="selectLibrary()"
+                                ></select>
+                            </div>
+                            <div class="form-group">
+                                <div>
+                                    <button class="btn btn-primary" type="button" ng-click="importMovie(1)" ng-disabled="model.importing">
+                                        Update Movies
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="import-mode-wrapper" ng-if="model.processingMode == 'import'">
+                            <div class="form-group ">
+                                <label class="control-label" for="import-type">Type</label>
+                                <select class="form-control" name="import-type" id="import-type" ng-model="model.importType">
+                                    <option>--------</option>
+                                    <option value="movie">Movies</option>
+                                    <option value="preroll" ng-if="viewVars.sinemaSettings['enable-prerolls'] == '1'">Prerolls</option>
+                                    <option value="trailer" ng-if="viewVars.sinemaSettings['enable-trailers'] == '1'">Trailers</option>
+                                </select>
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="plex-library-alias">Library Alias</label>
+                                <input class="form-control" id="plex-library-alias" name="plex-library-alias" type="text" ng-model="model.libraryAlias" />
+                                <div class="help-block"></div>
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="plex-library-id">Plex Movie Library ID</label>
+                                <input class="form-control" id="plex-library-id" name="plex-library-id" type="text" ng-model="model.libraryId" />
+                                <div class="help-block">If you are unsure what your library ID is just click the button.</div>
+                                <button type="button" class="btn btn-green micro" data-toggle="modal" data-target="#plexLibraryModal">
+                                    Show Plex Libraries
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <div>
+                                    <button class="btn btn-primary" type="button" ng-click="importMovie(1)" ng-disabled="model.importing">
+                                        Import/Update Movies
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div><!-- step 1 -->
 
             <div ng-if="model.step == 2">
                 <div class="row">

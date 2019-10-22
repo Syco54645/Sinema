@@ -1,7 +1,9 @@
 Sinema.controller('ImportPlexController', ['$scope', '$location', '$http', function($scope, $location, $http) {
 
   $scope.model = {
+    processingMode: 'update',
     importType: '--------',
+    libraryAlias: null,
     libraryId: null,
     importing: false,
     step: 1,
@@ -11,6 +13,21 @@ Sinema.controller('ImportPlexController', ['$scope', '$location', '$http', funct
 
   //$scope.model = {"importType":"movie","libraryId":5,"importing":false,"step":3,"numFilmsToBulkProcess":30,"filmBulkOffset":150}
 
+  $scope.selectLibrary = function (libraryType) {
+
+    for (var i = 0; i < viewVars.libraries.length; i++) {
+        if ($scope.model.libraryId == viewVars.libraries[i].id) {
+            $scope.model.importType = viewVars.libraries[i].library_type;
+        }
+    }
+
+  }
+
+  $scope.clickPlexLibrary = function (id, title) {
+
+    $scope.model.libraryId = id;
+    $scope.model.libraryAlias = title;
+  }
 
   $scope.importMovie = function (step) {
 
@@ -19,6 +36,9 @@ Sinema.controller('ImportPlexController', ['$scope', '$location', '$http', funct
     };
     if ($scope.model.step == 1) {
       submitData.libraryId = $scope.model.libraryId;
+      if ($scope.model.processingMode == 'import') {
+        submitData.libraryAlias = $scope.model.libraryAlias;
+      }
     } else if ($scope.model.step == 2) {
       submitData.numFilms = $scope.model.numFilmsToBulkProcess;
       submitData.offset = $scope.model.filmBulkOffset;

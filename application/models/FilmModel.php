@@ -217,4 +217,20 @@ class FilmModel extends MY_Model {
 
         return array_values($finalFilmIds);
     }
+
+    public function insertLibraryAlias($qd) {
+
+        $this->db->insert('libraries', $qd);
+        return $this->db->insert_id();
+    }
+
+    public function getLibraryAliases() {
+
+        $this->db->Select('*');
+        $this->db->from('libraries');
+
+        $result = $this->db->get();
+
+        return $result->result_array();
+    }
 }
