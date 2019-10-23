@@ -6,10 +6,13 @@ Sinema is an automation tool to help recreate the Grindhouse experience of the 7
 
 * Import films from Plex
 * Import prerolls from Plex
+* Import trailers from Plex
 * Import "subgenres" using IMDbPY
 * Create double feature from films using genre/subgenre
+   * Preroll support is being worked on. They are pulled in but not ordered correctly
 * Manage prerolls
 * Manage films
+* Manage trailers
 
 ## Installation
 
@@ -17,7 +20,7 @@ Sinema is an automation tool to help recreate the Grindhouse experience of the 7
 * Prerolls from archive.org
    * You can download these in bulk using the cli tool [ia](https://internetarchive.readthedocs.io/en/stable/cli.html)
    * `./ia download --search 'collection:DriveInMovieAds'`
-* Internet Archive metadata will be downloaded via the above command. Unfortunately the metadata is XML. I wrote [ArchiveMetaToKodiNfo](https://github.com/Syco54645/ArchiveMetaToKodiNfo) to convert the XML to Kodi style nfo. 
+* Internet Archive metadata will be downloaded via the above command. Unfortunately the metadata is XML. I wrote [ArchiveMetaToKodiNfo](https://github.com/Syco54645/ArchiveMetaToKodiNfo) to convert the XML to Kodi style nfo.
 * To use nfo metadata in Plex you need to install the [XBMCnfoMoviesImporter](https://github.com/gboudreau/XBMCnfoMoviesImporter.bundle) plugin and enable it for the repository.
 * Subgenres are not supported in Plex so to pull those I used the fantastic [IMDbPY](https://imdbpy.github.io/) and just call the small python script via PHP.
 * sqlite3 - you will have to import the file [grindhouse.sql](/databases/grindhouse.sql)
@@ -64,10 +67,10 @@ Follow the Installation guide above.
 * ~Move plex ip and token to vars~
 * save country
 * ~Edit var functionality (save settings)~
-* global enable trailer and var for id setting
-* global enable preroll and var for id setting
-* individual enable trailer/preroll
-* psa/short subject library support
+* ~global enable trailer and var for id setting~
+* ~global enable preroll and var for id setting~
+* ~individual enable trailer/preroll~
+* psa/short subject library support (this could be considered done now that we have multiple library support)
 * ~work out better way to call imdb api. perhaps a perpetual loading mechanism~
 * clean up existing functions and remove all of the test crap
 * library count on import screen.
@@ -77,3 +80,6 @@ Follow the Installation guide above.
 * ~fix base model~
 * clean up flashdata - started on this with angular libray
 * some sort of branding
+* multiple library support - partially implemented
+* lock ajax calls to being logged in
+* error handling on library import if already imported

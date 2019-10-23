@@ -17,12 +17,13 @@ class ImportPlex extends MY_Controller {
         $this->load->model('FilmModel', 'filmmodel');
         $this->load->model('SettingsModel', 'settingsmodel');
         $this->load->model('PrerollModel', 'prerollmodel');
+        $this->load->model('TrailerModel', 'trailermodel');
 
         $this->plexApiToken = $this->config->sinemaSettings['plex-api-token'];
     }
 
     public function import_plex() {
-        $data = $this->starterData;;
+        $data = $this->starterData;
         $data['title'] = "Import Collection From Plex";
 
         $this->load->model('SettingsModel');
@@ -50,6 +51,47 @@ class ImportPlex extends MY_Controller {
         $this->load->view('partials/template-footer', $data);
     }
 
+    private function _get_movie_data_from_plex_object($video) {
+
+        $movie = [];
+        $movie['id'] = isset($video['ratingKey']) ? $video['ratingKey'] : null;
+        $movie['title'] = isset($video['title']) ? $video['title'] : null;
+        $movie['studio'] = isset($video['studio']) ? $video['studio'] : null;
+        $movie['rating'] = isset($video['rating']) ? $video['rating'] : null;
+        $movie['year'] = isset($video['year']) ? $video['year'] : null;
+        $movie['summary'] = isset($video['summary']) ? $video['summary'] : null;
+        $movie['thumb'] = isset($video['thumb']) ? $video['thumb'] : null;
+        $movie['art'] = isset($video['art']) ? $video['art'] : null;
+        $movie['guid'] = isset($video['guid']) ? $video['guid'] : null;
+
+        if (isset($video['guid'])) {
+            $movie['imdbId'] = Utility::getImdbId($video['guid']);
+        } else {
+            $movie['imdbId'] = null;
+        }
+
+        $movie['country'] = null;
+        if (isset($video['Country'])) {
+            $movie['country'] = [];
+            foreach ($video['Country'] as $country) {
+                $movie['country'][] = $country['tag'];
+            }
+        }
+
+        $movie['genre'] = null;
+        if (isset($video['Genre'])) {
+            $movie['genre'] = [];
+            foreach ($video['Genre'] as $genre) {
+                $movie['genre'][] = $genre['tag'];
+            }
+        }
+
+        $movie['thumbUrl'] = Utility::getPlexThumbnailUrl($movie['thumb'], $this->plexApiToken);
+        $movie['artUrl'] = Utility::getPlexThumbnailUrl($movie['art'], $this->plexApiToken);
+
+        return $movie;
+    }
+
     private function _plex_movie_step_one($service_url, $libraryId) {
         /*
         ** insert movies
@@ -60,41 +102,7 @@ class ImportPlex extends MY_Controller {
         $get_data_array = json_decode($get_data, TRUE);
 
         foreach($get_data_array['MediaContainer']["Metadata"] as $k=>$video) {
-            $movie = [];
-            $movie['id'] = isset($video['ratingKey']) ? $video['ratingKey'] : null;
-            $movie['title'] = isset($video['title']) ? $video['title'] : null;
-            $movie['studio'] = isset($video['studio']) ? $video['studio'] : null;
-            $movie['rating'] = isset($video['rating']) ? $video['rating'] : null;
-            $movie['year'] = isset($video['year']) ? $video['year'] : null;
-            $movie['summary'] = isset($video['summary']) ? $video['summary'] : null;
-            $movie['thumb'] = isset($video['thumb']) ? $video['thumb'] : null;
-            $movie['art'] = isset($video['art']) ? $video['art'] : null;
-            $movie['guid'] = isset($video['guid']) ? $video['guid'] : null;
-
-            if (isset($video['guid'])) {
-                $movie['imdbId'] = Utility::getImdbId($video['guid']);
-            } else {
-                $movie['imdbId'] = null;
-            }
-
-            $movie['country'] = null;
-            if (isset($video['Country'])) {
-                $movie['country'] = [];
-                foreach ($video['Country'] as $country) {
-                    $movie['country'][] = $country['tag'];
-                }
-            }
-
-            $movie['genre'] = null;
-            if (isset($video['Genre'])) {
-                $movie['genre'] = [];
-                foreach ($video['Genre'] as $genre) {
-                    $movie['genre'][] = $genre['tag'];
-                }
-            }
-
-            $movie['thumbUrl'] = Utility::getPlexThumbnailUrl($movie['thumb'], $this->plexApiToken);
-            $movie['artUrl'] = Utility::getPlexThumbnailUrl($movie['art'], $this->plexApiToken);
+            $movie = $this->_get_movie_data_from_plex_object($video);
             /*echo '<img src="' . $movie['thumbUrl'] . '" />';
             echo '<img src="' . $movie['artUrl'] . '" />';*/
             $qd = [
@@ -144,8 +152,8 @@ class ImportPlex extends MY_Controller {
     private function _plex_movie_step_two($service_url) {
 
         $_POST = Utility::getPost();
-//Utility::debug($this->input->post('numFilms'), false);
-//Utility::debug($this->input->post('offset'), false);
+        //Utility::debug($this->input->post('numFilms'), false);
+        //Utility::debug($this->input->post('offset'), false);
         $options = [
             "limit" => $this->input->post('numFilms'),
             "offset" => $this->input->post('offset'),
@@ -155,7 +163,7 @@ class ImportPlex extends MY_Controller {
         foreach ($movies as $k=>$movie) {
 
             $movieSubgenres = Utility::getMovieSubgenres($movie['imdbId']);
-//Utility::debug($movie['imdbId'], false);
+            //Utility::debug($movie['imdbId'], false);
 
             foreach ($movieSubgenres as $subgenre) {
                 $qd = [
@@ -221,6 +229,42 @@ class ImportPlex extends MY_Controller {
         return ['status' => 'success'];
     }
 
+    private function _plex_trailer_step_one($service_url, $libraryId) {
+
+        $get_data = $this->filmmodel->callAPI('GET', $service_url, false);
+        $get_data_array = json_decode($get_data, TRUE);
+
+        foreach($get_data_array['MediaContainer']["Metadata"] as $k=>$video) {
+            $movie = $this->_get_movie_data_from_plex_object($video);
+            /*echo '<img src="' . $movie['thumbUrl'] . '" />';
+            echo '<img src="' . $movie['artUrl'] . '" />';*/
+            $qd = [
+                'id' => $movie['id'],
+                'title' => $movie['title'],
+                'studio' => $movie['studio'],
+                'rating' => $movie['rating'],
+                'year' => $movie['year'],
+                'summary' => $movie['summary'],
+                'thumb' => $movie['thumb'],
+                'art' => $movie['art'],
+                'guid' => $movie['guid'],
+                'imdbId' => $movie['imdbId'],
+                'thumbUrl' => $movie['thumbUrl'],
+                'artUrl' => $movie['artUrl'],
+                'library_id' => $libraryId,
+            ];
+
+            // insert the trailer if it doesnt exist
+            if ($this->trailermodel->checkTrailerExists($movie['id']) === 0) {
+                $this->trailermodel->storeTrailer($qd);
+            } else {
+                $this->trailermodel->updateTrailer($movie['id'], $qd);
+            }
+        }
+        // todo add something so that we know if it fails
+        return ['status' => 'success'];
+    }
+
     public function ajaxImportPlex($step) {
 
         $this->load->model('SettingsModel');
@@ -240,21 +284,24 @@ class ImportPlex extends MY_Controller {
             ];
             $this->filmmodel->insertLibraryAlias($qd);
         }
+        $service_url = sprintf(Utility::getPlexUrl("library"), $libraryId, $plexApiKey);
         switch ($type) {
             case 'preroll':
-                $service_url = sprintf(Utility::getPlexUrl("library"), $libraryId, $plexApiKey);
                 if ($step == 1) {
                     $response = $this->_plex_preroll_step_one($service_url);
                 }
                 break;
             case 'movie':
-                $service_url = sprintf(Utility::getPlexUrl("library"), $libraryId, $plexApiKey);
                 if ($step == 1) {
                     $response = $this->_plex_movie_step_one($service_url, $libraryId);
                 } elseif ($step == 2) {
                     $response = $this->_plex_movie_step_two($service_url);
                 }
                 break;
+            case 'trailer':
+                if ($step == 1) {
+                    $response = $this->_plex_trailer_step_one($service_url, $libraryId);
+                }
             default:
                 # code...
                 break;

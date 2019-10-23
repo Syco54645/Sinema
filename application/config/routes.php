@@ -66,6 +66,9 @@ $route['ajax/save-settings'] = 'admin/ajaxSaveSettings';
 $route['admin/prerolls'] = 'preroll/manage';
 $route['admin/prerolls/edit/(:num)'] = 'preroll/edit/$1';
 
+$route['admin/trailers'] = 'trailer/manage';
+$route['admin/trailers/edit/(:num)'] = 'trailer/edit/$1';
+
 $route['admin/films'] = 'film/manage';
 $route['admin/films/edit/(:num)'] = 'film/edit/$1';
 

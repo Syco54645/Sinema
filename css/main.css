@@ -27,7 +27,8 @@
   background-color: #ccc; }
 
 .preroll-image,
-.film-image {
+.film-image,
+.trailer-image {
   width: 100px; }
 
 .edit-preoll .preroll-image {
@@ -35,6 +36,10 @@
   width: 400px; }
 
 .edit-film .film-image {
+  margin-top: 20px;
+  width: 400px; }
+
+.edit-trailer .trailer-image {
   margin-top: 20px;
   width: 400px; }
 
