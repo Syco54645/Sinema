@@ -165,7 +165,7 @@ Utility::debug($film2, false);
         $sortedPrerolls['prerollObjects'][] = $preroll;
         if ($wantedPrerollSeries != null && $preroll['preroll_series_id'] == $wantedPrerollSeries) {
             $sortedPrerolls['seriesIndexes'][] = $next;
-        } else {
+        } elseif ($wantedPrerollSeries == null) {
             $sortedPrerolls['seriesIndexes'][] = count($sortedPrerolls['prerollObjects']) - 1;
         }
         return $sortedPrerolls;
