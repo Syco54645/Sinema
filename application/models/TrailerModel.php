@@ -52,4 +52,16 @@ class TrailerModel extends MY_Model {
         $this->db->where('id', $id);
         $this->db->update('trailers', $qd);
     }
+
+    public function getRandomTrailers($num = 10) {
+
+        $this->db->select('*');
+        $this->db->from('trailers');
+        $this->db->order_by('random()');
+        $this->db->limit($num);
+
+        $result = $this->db->get();
+
+        return $result->result_array();
+    }
 }

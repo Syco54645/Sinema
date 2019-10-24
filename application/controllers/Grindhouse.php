@@ -14,6 +14,7 @@ class Grindhouse extends MY_Controller {
         }
         $this->load->model('FilmModel', 'filmmodel');
         $this->load->model('PrerollModel', 'prerollmodel');
+        $this->load->model('TrailerModel', 'trailermodel');
     }
 
     public function index() {
@@ -55,7 +56,6 @@ class Grindhouse extends MY_Controller {
             $film2 = $selectedFilms[1];
 
             $sortedPrerolls = $this->_getPrerolls();
-            $trailers = [];
 
             $format = "[introPreroll]
 [trailer*]
@@ -70,19 +70,34 @@ class Grindhouse extends MY_Controller {
 [film]
 [outroPreroll]";
 
+            $trailers = [
+                'num' => $_POST['search']['criteria']['trailers']['number'],
+                'items' => $this->trailermodel->getRandomTrailers($_POST['search']['criteria']['trailers']['number'])
+            ];
             $assembledFeature = $this->_assembleFeature($format, $sortedPrerolls, $selectedFilms, $trailers);
-
-foreach($assembledFeature as $featureItem) {
-    echo "<b>" . $featureItem['type'] . "</b>" . ': ' . $featureItem['item']['id'] . ' ' . $featureItem['item']['title'] . "<br>";
-}
+            $this->_processAssembledFeature($assembledFeature);
             /*'introPrerolls' => [
                 'seriesIndexes' => [],
                 'prerollObjects' => [],
                 'seriesNotFoundError' => false,
             ],*/
 
-            Utility::debug($sortedPrerolls, true);
-            Utility::debug($filmIds, true);
+            //Utility::debug($sortedPrerolls, true);
+            //Utility::debug($filmIds, true);
+        }
+    }
+
+    private function _processAssembledFeature($assembledFeature) {
+
+        foreach($assembledFeature as $featureItem) {
+            if ($featureItem['type'] == 'Trailer') {
+                echo "<b>" . $featureItem['type'] . "</b>" . ': ';
+                foreach($featureItem['item'] as $item) {
+                    echo $item['id'] . ' ' . $item['title'] . "<br>";
+                }
+            } else {
+                echo "<b>" . $featureItem['type'] . "</b>" . ': ' . $featureItem['item']['id'] . ' ' . $featureItem['item']['title'] . "<br>";
+            }
         }
     }
 
@@ -96,7 +111,8 @@ foreach($assembledFeature as $featureItem) {
         });
         $complete = [];
         $filmIndex = 0;
-        foreach ($formatArray as $item) {
+        $trailerIndexes = [];
+        foreach ($formatArray as $i=>$item) {
             $temp = [];
             switch ($item) {
                 case '[introPreroll]':
@@ -112,7 +128,7 @@ foreach($assembledFeature as $featureItem) {
                     $temp['item'] = $preroll;
                     break;
                 case '[film]':
-                    $temp['type'] = 'film';
+                    $temp['type'] = 'Film';
                     $temp['item'] = $selectedFilms[$filmIndex];
                     $filmIndex++;
                     break;
@@ -129,8 +145,11 @@ foreach($assembledFeature as $featureItem) {
                     $temp['item'] = $preroll;
                     break;
                 case '[trailer*]':
-                    $temp['type'] = 'trailer';
-                    $temp['item'] = ['id' => '12345', 'title' => 'UNIMPLEMENTED'];
+                    $temp['type'] = 'Trailer';
+                    $temp['item'] = [
+                        array_pop($trailers['items']),
+                    ];
+                    $trailerIndexes[] = $i;
                     break;
                 case '[outroPreroll]':
                     $temp['type'] = 'Outro Preroll';
@@ -140,6 +159,11 @@ foreach($assembledFeature as $featureItem) {
                     break;
             }
             $complete[] = $temp;
+        }
+
+        for ($i = count($trailers['items']); $i > 0; $i--) {
+            $trailerStoreIndex = $trailerIndexes[rand(0, count($trailerIndexes) -1 )];
+            $complete[$trailerStoreIndex]['item'][] = array_pop($trailers['items']);
         }
 
         return $complete;

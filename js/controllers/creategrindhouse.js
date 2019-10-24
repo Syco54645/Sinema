@@ -25,7 +25,7 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
             },
             trailers: {
                 adult: true,
-                number: 15,
+                number: 8,
             }
         },
     },
