@@ -53,111 +53,96 @@ class Grindhouse extends MY_Controller {
 
             $film1 = $selectedFilms[0];
             $film2 = $selectedFilms[1];
-//SENDING WRONG DATA FOR SELECTED PREROLLS
 
+            $sortedPrerolls = $this->_getPrerolls();
+            $trailers = [];
 
-            if (Utility::checkSettingEnabled('enable-prerolls') && $_POST['search']['selected']['prerolls']) {
-//Utility::debug($_POST['search']['criteria']['prerolls'], true);
-                $wantedPrerollSeries = null;
-                if ($_POST['search']['criteria']['prerolls']['stayInSeries'] == true) {
-                    $wantedPrerollSeries = $_POST['search']['criteria']['prerolls']['selectedSeries'];
-                }
+            $format = "[introPreroll]
+[trailer*]
+[joinerPreroll]
+[trailer*]
+[featurePresentationPreroll]
+[film]
+[intermissionPreroll]
+[trailer*]
+[joinerPreroll]
+[trailer*]
+[film]
+[outroPreroll]";
 
-                /*
-                bettrer way to do prerolls
-                pull all in
-                do a search on the subkey to find the preroll series
-                if you dont find any it will just pull a random from the array
-                 */
+            $assembledFeature = $this->_assembleFeature($format, $sortedPrerolls, $selectedFilms, $trailers);
 
-                $prerolls = $this->prerollmodel->getPrerolls(/*$options*/);
+foreach($assembledFeature as $featureItem) {
+    echo "<b>" . $featureItem['type'] . "</b>" . ': ' . $featureItem['item']['id'] . ' ' . $featureItem['item']['title'] . "<br>";
+}
+            /*'introPrerolls' => [
+                'seriesIndexes' => [],
+                'prerollObjects' => [],
+                'seriesNotFoundError' => false,
+            ],*/
 
-                $sortedPrerolls = [
-                    'introPrerolls' => [
-                        'seriesIndexes' => [],
-                        'prerollObjects' => [],
-                        'seriesNotFoundError' => false,
-                    ],
-                    'intermissionPrerolls' => [
-                        'seriesIndexes' => [],
-                        'prerollObjects' => [],
-                        'seriesNotFoundError' => false,
-                    ],
-                    'joinerPrerolls' => [
-                        'seriesIndexes' => [],
-                        'prerollObjects' => [],
-                        'seriesNotFoundError' => false,
-                    ],
-                    'featurePresentationPrerolls' => [
-                        'seriesIndexes' => [],
-                        'prerollObjects' => [],
-                        'seriesNotFoundError' => false,
-                    ],
-                    'informationPrerolls' => [
-                        'seriesIndexes' => [],
-                        'prerollObjects' => [],
-                        'seriesNotFoundError' => false,
-                    ],
-                    'outroPrerolls' => [
-                        'seriesIndexes' => [],
-                        'prerollObjects' => [],
-                        'seriesNotFoundError' => false,
-                    ],
-                ];
-
-                foreach ($prerolls as $preroll) {
-                    switch ($preroll['preroll_type_slug']) {
-
-                        case 'intro':
-                            $sortedPrerolls['introPrerolls'] = $this->_storeSortedPreroll($sortedPrerolls['introPrerolls'], $preroll, $wantedPrerollSeries);
-                            break;
-
-                        case 'intermission':
-                            $sortedPrerolls['intermissionPrerolls'] = $this->_storeSortedPreroll($sortedPrerolls['intermissionPrerolls'], $preroll, $wantedPrerollSeries);
-                            break;
-
-                        case 'joiner':
-                            $sortedPrerolls['joinerPrerolls'] = $this->_storeSortedPreroll($sortedPrerolls['joinerPrerolls'], $preroll, $wantedPrerollSeries);
-                            break;
-
-                        case 'feature-presentation':
-                            $sortedPrerolls['featurePresentationPrerolls'] = $this->_storeSortedPreroll($sortedPrerolls['featurePresentationPrerolls'], $preroll, $wantedPrerollSeries);
-                            break;
-
-                        case 'information':
-                            $sortedPrerolls['informationPrerolls'] = $this->_storeSortedPreroll($sortedPrerolls['informationPrerolls'], $preroll, $wantedPrerollSeries);
-                            break;
-
-                        case 'outro':
-                            $sortedPrerolls['outroPrerolls'] = $this->_storeSortedPreroll($sortedPrerolls['outroPrerolls'], $preroll, $wantedPrerollSeries);
-                            break;
-
-                        default:
-                            # code...
-                            break;
-                    }
-                }
-
-                if ($wantedPrerollSeries != null) {
-                    foreach ($sortedPrerolls as &$sortedPreroll) {
-                        if (count($sortedPreroll["seriesIndexes"]) == 0) {
-                            $sortedPreroll['seriesNotFoundError'] = true;
-                            // preseed the seriesIndexes since we have the error set above
-                            // while this may be confusing given the name it will be easiest to work with this way
-                            $sortedPreroll["seriesIndexes"] = range(0, count($sortedPreroll["prerollObjects"]) - 1);
-                        }
-                    }
-                }
-                Utility::debug($sortedPrerolls, true);
-            }
-
-Utility::debug($featurePresentationPrerolls, false);
-Utility::debug($film1, false);
-Utility::debug($intermissionPrerolls, true);
-Utility::debug($joinerPrerolls, true);
-Utility::debug($film2, false);
+            Utility::debug($sortedPrerolls, true);
             Utility::debug($filmIds, true);
         }
+    }
+
+    private function _assembleFeature($format, $sortedPrerolls, $selectedFilms, $trailers) {
+        $formatArray = explode("\n", $format);
+        $trailerBreaks = array_count_values($formatArray)['[trailer*]'];
+
+        usort($selectedFilms, function ($item1, $item2) {
+            if ($item1['rating'] == $item2['rating']) return 0;
+            return $item1['rating'] < $item2['rating'] ? -1 : 1;
+        });
+        $complete = [];
+        $filmIndex = 0;
+        foreach ($formatArray as $item) {
+            $temp = [];
+            switch ($item) {
+                case '[introPreroll]':
+                    $temp['type'] = 'Intro Preroll';
+                    $prerollIndex = rand(0, count($sortedPrerolls['introPrerolls']['seriesIndexes']) -1 );
+                    $preroll = $sortedPrerolls['introPrerolls']['prerollObjects'][$prerollIndex];
+                    $temp['item'] = $preroll;
+                    break;
+                case '[featurePresentationPreroll]':
+                    $temp['type'] = 'Feature Presentation Preroll';
+                    $prerollIndex = rand(0, count($sortedPrerolls['featurePresentationPrerolls']['seriesIndexes']) -1 );
+                    $preroll = $sortedPrerolls['featurePresentationPrerolls']['prerollObjects'][$prerollIndex];
+                    $temp['item'] = $preroll;
+                    break;
+                case '[film]':
+                    $temp['type'] = 'film';
+                    $temp['item'] = $selectedFilms[$filmIndex];
+                    $filmIndex++;
+                    break;
+                case '[intermissionPreroll]':
+                    $temp['type'] = 'Intermission Preroll';
+                    $prerollIndex = rand(0, count($sortedPrerolls['intermissionPrerolls']['seriesIndexes']) -1 );
+                    $preroll = $sortedPrerolls['intermissionPrerolls']['prerollObjects'][$prerollIndex];
+                    $temp['item'] = $preroll;
+                    break;
+                case '[joinerPreroll]':
+                    $temp['type'] = 'Joiner Preroll';
+                    $prerollIndex = rand(0, count($sortedPrerolls['joinerPrerolls']['seriesIndexes']) -1 );
+                    $preroll = $sortedPrerolls['joinerPrerolls']['prerollObjects'][$prerollIndex];
+                    $temp['item'] = $preroll;
+                    break;
+                case '[trailer*]':
+                    $temp['type'] = 'trailer';
+                    $temp['item'] = ['id' => '12345', 'title' => 'UNIMPLEMENTED'];
+                    break;
+                case '[outroPreroll]':
+                    $temp['type'] = 'Outro Preroll';
+                    $prerollIndex = rand(0, count($sortedPrerolls['outroPrerolls']['seriesIndexes']) -1 );
+                    $preroll = $sortedPrerolls['outroPrerolls']['prerollObjects'][$prerollIndex];
+                    $temp['item'] = $preroll;
+                    break;
+            }
+            $complete[] = $temp;
+        }
+
+        return $complete;
     }
 
     private function _storeSortedPreroll($sortedPrerolls, $preroll, $wantedPrerollSeries) {
@@ -198,6 +183,104 @@ Utility::debug($film2, false);
         }
 
         return $returnData;
+    }
+
+    private function _getPrerolls() {
+        if (Utility::checkSettingEnabled('enable-prerolls') && $_POST['search']['selected']['prerolls']) {
+//Utility::debug($_POST['search']['criteria']['prerolls'], true);
+            $wantedPrerollSeries = null;
+            if ($_POST['search']['criteria']['prerolls']['stayInSeries'] == true) {
+                $wantedPrerollSeries = $_POST['search']['criteria']['prerolls']['selectedSeries'];
+            }
+
+            /*
+            bettrer way to do prerolls
+            pull all in
+            do a search on the subkey to find the preroll series
+            if you dont find any it will just pull a random from the array
+             */
+
+            $prerolls = $this->prerollmodel->getPrerolls(/*$options*/);
+
+            $sortedPrerolls = [
+                'introPrerolls' => [
+                    'seriesIndexes' => [],
+                    'prerollObjects' => [],
+                    'seriesNotFoundError' => false,
+                ],
+                'intermissionPrerolls' => [
+                    'seriesIndexes' => [],
+                    'prerollObjects' => [],
+                    'seriesNotFoundError' => false,
+                ],
+                'joinerPrerolls' => [
+                    'seriesIndexes' => [],
+                    'prerollObjects' => [],
+                    'seriesNotFoundError' => false,
+                ],
+                'featurePresentationPrerolls' => [
+                    'seriesIndexes' => [],
+                    'prerollObjects' => [],
+                    'seriesNotFoundError' => false,
+                ],
+                'informationPrerolls' => [
+                    'seriesIndexes' => [],
+                    'prerollObjects' => [],
+                    'seriesNotFoundError' => false,
+                ],
+                'outroPrerolls' => [
+                    'seriesIndexes' => [],
+                    'prerollObjects' => [],
+                    'seriesNotFoundError' => false,
+                ],
+            ];
+
+            foreach ($prerolls as $preroll) {
+                switch ($preroll['preroll_type_slug']) {
+
+                    case 'intro':
+                        $sortedPrerolls['introPrerolls'] = $this->_storeSortedPreroll($sortedPrerolls['introPrerolls'], $preroll, $wantedPrerollSeries);
+                        break;
+
+                    case 'intermission':
+                        $sortedPrerolls['intermissionPrerolls'] = $this->_storeSortedPreroll($sortedPrerolls['intermissionPrerolls'], $preroll, $wantedPrerollSeries);
+                        break;
+
+                    case 'joiner':
+                        $sortedPrerolls['joinerPrerolls'] = $this->_storeSortedPreroll($sortedPrerolls['joinerPrerolls'], $preroll, $wantedPrerollSeries);
+                        break;
+
+                    case 'feature-presentation':
+                        $sortedPrerolls['featurePresentationPrerolls'] = $this->_storeSortedPreroll($sortedPrerolls['featurePresentationPrerolls'], $preroll, $wantedPrerollSeries);
+                        break;
+
+                    case 'information':
+                        $sortedPrerolls['informationPrerolls'] = $this->_storeSortedPreroll($sortedPrerolls['informationPrerolls'], $preroll, $wantedPrerollSeries);
+                        break;
+
+                    case 'outro':
+                        $sortedPrerolls['outroPrerolls'] = $this->_storeSortedPreroll($sortedPrerolls['outroPrerolls'], $preroll, $wantedPrerollSeries);
+                        break;
+
+                    default:
+                        # code...
+                        break;
+                }
+            }
+
+            if ($wantedPrerollSeries != null) {
+                foreach ($sortedPrerolls as &$sortedPreroll) {
+                    if (count($sortedPreroll["seriesIndexes"]) == 0) {
+                        $sortedPreroll['seriesNotFoundError'] = true;
+                        // preseed the seriesIndexes since we have the error set above
+                        // while this may be confusing given the name it will be easiest to work with this way
+                        $sortedPreroll["seriesIndexes"] = range(0, count($sortedPreroll["prerollObjects"]) - 1);
+                    }
+                }
+            }
+//                Utility::debug($sortedPrerolls, true);
+        }
+        return $sortedPrerolls;
     }
 
     public function upcoming() {

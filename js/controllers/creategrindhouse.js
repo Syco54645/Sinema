@@ -9,10 +9,15 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
             prerolls: true,
             trailers: true,
         },
+        options: {
+          genreSubgenreIntersect: false,
+          genreMode: 'matchAny',
+          subgenreMode: 'matchAny',
+        },
         criteria: {
-            genre: [],
+            //genre: [],
             genreId: [],
-            subgenre: [],
+            //subgenre: [],
             subgenreId: [],
             prerolls: {
                 stayInSeries: true,
@@ -20,13 +25,34 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
             },
             trailers: {
                 adult: true,
-                number: 5,
+                number: 15,
             }
         },
     },
   };
 
-  $scope.selectGenre = function (genreSlug, genreId) {
+  $scope.selectizeConfigs = {
+    genre: {
+      plugins: ['remove_button'],
+      create: false,
+      placeholder: 'Genres',
+      options: viewVars.genres,
+      valueField: 'id',
+      labelField: 'genre',
+      persist: false,
+    },
+    subgenre: {
+      plugins: ['remove_button'],
+      create: false,
+      placeholder: 'Tags',
+      options: viewVars.subgenres,
+      valueField: 'id',
+      labelField: 'subgenre',
+      persist: false,
+    },
+  };
+
+/*  $scope.selectGenre = function (genreSlug, genreId) {
 
     if ($scope.model.search.criteria.genre.indexOf(genreSlug) != -1) {
         var index = $scope.model.search.criteria.genre.indexOf(genreSlug);
@@ -67,7 +93,7 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
         $scope.model.search.criteria.subgenreId.push(subgenreId);
     }
 
-  }
+  }*/
 
 
   $scope.createGrind = function (step) {

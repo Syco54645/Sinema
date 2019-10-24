@@ -20,42 +20,70 @@
                 <div class="row">
                     <div class="col-md-4 col-sm-6 col-xs-12">
 
-                        <div class="form-group ">
-                            <label class="control-label " for="genre">
-                                <input name="genre" id="genre" type="checkbox" ng-model="model.search.selected.genre" />
-                                Genre
+                        <div class="form-group border">
+                            <label class="control-label " for="genre-enable">
+                                <input name="genre-enable" id="genre-enable" type="checkbox" ng-model="model.search.selected.genre" />
+                                Genres
                             </label>
-                            <div class="genre-wrapper" ng-class="{ disabled: !model.search.selected.genre }" >
-
-                                <div class="row" ng-repeat="genres in viewVars.genres | chunkBy:4">
-                                    <div class="col-md-3 letter-box" ng-repeat="genre in genres" >
-                                        <label class="checkbox genre-checkbox">
-                                            <input name="checkbox" type="checkbox" ng-change="selectGenre(genre.genre_slug, genre.id)" ng-model="genre.isChecked" value="{{ genre.genre_slug }}" ng-disabled="!model.search.selected.genre" />
-                                            {{ genre.genre }}
-                                        </label>
-                                    </div>
-                                </div>
-
+                            <div class="">
+                                <label class="radio-inline">
+                                    <input name="genreMode" type="radio" value="matchAny" ng-disabled ng-model="model.search.options.genreMode"="!model.search.selected.genre" />
+                                    Match Any
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="genreMode" type="radio" value="matchEvery" ng-model="model.search.options.genreMode" ng-disabled="!model.search.selected.genre" />
+                                    Match All
+                                </label>
                             </div>
+                            <selectize
+                                config="selectizeConfigs.genre"
+                                id="genre"
+                                name="genre"
+                                ng-model="model.search.criteria.genreId"
+                                ng-disabled="!model.search.selected.genre"
+                            ></selectize>
                         </div>
 
-                        <div class="form-group ">
-                            <label class="control-label " for="subgenre">
-                                <input name="subgenre" id="subgenre" type="checkbox" ng-model="model.search.selected.subgenre" />
-                                Subgenre
-                            </label>
-                            <div class="subgenre-wrapper" ng-class="{ disabled: !model.search.selected.subgenre }" >
-
-                                <div class="row" ng-repeat="subgenres in viewVars.subgenres | chunkBy:4">
-                                    <div class="col-md-3 letter-box" ng-repeat="subgenre in subgenres" >
-                                        <label class="checkbox subgenre-checkbox">
-                                            <input name="checkbox" type="checkbox" ng-change="selectSubgenre(subgenre.subgenre_slug, subgenre.id)" ng-model="subgenre.isChecked" value="{{ subgenre.subgenre_slug }}" ng-disabled="!model.search.selected.subgenre" />
-                                            {{ subgenre.subgenre }}
-                                        </label>
-                                    </div>
-                                </div>
-
+                        <div class="form-group border">
+                            <div class="">
+                                <label class="radio-inline">
+                                    <input name="genreSubgenreIntersect" type="radio" ng-value="true" ng-model="model.search.options.genreSubgenreIntersect" />
+                                    And
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="genreSubgenreIntersect" type="radio" ng-value="false" ng-model="model.search.options.genreSubgenreIntersect" />
+                                    Or
+                                </label>
                             </div>
+                            <span class="help-block">
+                                Selecting "and" will cause a strict search with genre and tag
+                            </span>
+                        </div>
+
+                        <div class="form-group border">
+                            <label class="control-label " for="subgenre-enable">
+                                <input name="subgenre-enable" id="subgenre-enable" type="checkbox" ng-model="model.search.selected.subgenre" />
+                                Tags
+                            </label>
+
+                            <div class="">
+                                <label class="radio-inline">
+                                    <input name="subgenreMode" type="radio" value="matchAny" ng-model="model.search.options.subgenreMode" ng-disabled="!model.search.selected.subgenre" />
+                                    Match Any
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="subgenreMode" type="radio" value="matchEvery" ng-model="model.search.options.subgenreMode" ng-disabled="!model.search.selected.subgenre" />
+                                    Match All
+                                </label>
+                            </div>
+
+                            <selectize
+                                config="selectizeConfigs.subgenre"
+                                id="subgenre"
+                                name="subgenre"
+                                ng-model="model.search.criteria.subgenreId"
+                                ng-disabled="!model.search.selected.subgenre"
+                            ></selectize>
                         </div>
 
                         <div class="form-group " ng-if="viewVars.sinemaSettings['enable-prerolls'] == '1'">

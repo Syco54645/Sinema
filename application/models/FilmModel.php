@@ -48,7 +48,7 @@ class FilmModel extends MY_Model {
         $this->db->from('films');
         $this->db->where('id', $id);
 
-        return $this->db->get()->row();
+        return $this->db->get()->row_array();
     }
 
     public function checkFilmExists($id) {
@@ -143,22 +143,34 @@ class FilmModel extends MY_Model {
         return $this->insert_ignore('map_subgenre_film', $qd);
     }
 
-    public function getFilmsForGenres($genres) {
+    public function getFilmsForGenres($genres, $mode) {
 
         $this->db->select('film_id');
         $this->db->from('map_genre_film');
-        $this->db->where_in('genre_id', $genres);
+        if ($mode == "matchAny") {
+            $this->db->where_in('genre_id', $genres);
+        } else {
+            foreach ($genres as $genre) {
+                $this->db->where('genre_id', $genre);
+            }
+        }
 
         $result = $this->db->get();
 
         return $result->result_array();
     }
 
-    public function getFilmsForSubgenres($subgenres) {
+    public function getFilmsForSubgenres($subgenres, $mode) {
 
         $this->db->select('film_id');
         $this->db->from('map_subgenre_film');
-        $this->db->where_in('subgenre_id', $subgenres);
+        if ($mode == "matchAny") {
+            $this->db->where_in('subgenre_id', $subgenres);
+        } else {
+            foreach ($subgenres as $subgenre) {
+                $this->db->where('subgenre_id', $subgenre);
+            }
+        }
 
         $result = $this->db->get();
 
@@ -196,24 +208,37 @@ class FilmModel extends MY_Model {
 
         $genreFilms = [];
         if ($search['selected']['genre'] == true) {
-            $tempFilms = $this->getFilmsForGenres($search['criteria']['genreId']);
+            $tempFilms = $this->getFilmsForGenres($search['criteria']['genreId'], $search['options']['genreMode']);
             foreach ($tempFilms as $film) {
                 $genreFilms[] = $film['film_id'];
             }
         }
-        $genreFilms = array_unique($genreFilms) ;
+        $genreFilms = array_unique($genreFilms);
 
         $subgenreFilms = [];
         if ($search['selected']['subgenre'] == true) {
-            $tempFilms = $this->getFilmsForSubgenres($search['criteria']['subgenreId']);
+            $tempFilms = $this->getFilmsForSubgenres($search['criteria']['subgenreId'], $search['options']['subgenreMode']);
             foreach ($tempFilms as $film) {
                 $subgenreFilms[] = $film['film_id'];
             }
         }
         $subgenreFilms = array_unique($subgenreFilms);
 
-        // todo only do an intersect IF the arrays are populated
-        $finalFilmIds = array_intersect($genreFilms, $subgenreFilms);
+        $finalFilmIds = [];
+
+        if (count($genreFilms) || count($subgenreFilms)) {
+            if ($search['options']['genreSubgenreIntersect']) {
+                $finalFilmIds = array_intersect($genreFilms, $subgenreFilms);
+            } else {
+                $finalFilmIds = array_merge($genreFilms, $subgenreFilms);
+                $finalFilmIds = array_unique($finalFilmIds);
+            }
+        } elseif (count($genreFilms)) {
+            $finalFilmIds = $genreFilms;
+        } elseif (count($subgenreFilms)) {
+            $finalFilmIds = $subgenreFilms;
+        }
+        //Utility::debug(count($finalFilmIds), true);
 
         return array_values($finalFilmIds);
     }
