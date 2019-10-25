@@ -124,7 +124,7 @@ class Utility {
 
     public static function getMovieSubgenres($imdbId) {
 
-        $command = escapeshellcmd('python ./test.py ' . str_replace('tt', '', $imdbId));
+        $command = escapeshellcmd('python ./python/keywords.py ' . str_replace('tt', '', $imdbId));
         $output = shell_exec($command);
         $movieSubgenres = Utility::getWantedSubgenres(json_decode($output));
         return $movieSubgenres;
