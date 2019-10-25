@@ -31,7 +31,7 @@ class Grindhouse extends MY_Controller {
         $data = $this->starterData;
 
         $data['genres'] = $this->filmmodel->getGenres();
-        $data['subgenres'] = $this->filmmodel->getSubgenres();
+        $data['tags'] = $this->filmmodel->getTags();
 
         if (Utility::checkSettingEnabled('enable-prerolls')) {
             $data['prerollSeries'] = $this->prerollmodel->getPrerollSeries();

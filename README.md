@@ -7,8 +7,8 @@ Sinema is an automation tool to help recreate the Grindhouse experience of the 7
 * Import films from Plex
 * Import prerolls from Plex
 * Import trailers from Plex
-* Import "subgenres" using IMDbPY
-* Create double feature from films using genre/subgenre
+* Import "tags" using IMDbPY
+* Create double feature from films using genre/tag
    * Preroll support is being worked on. They are pulled in but not ordered correctly
 * Manage prerolls
 * Manage films
@@ -22,7 +22,7 @@ Sinema is an automation tool to help recreate the Grindhouse experience of the 7
    * `./ia download --search 'collection:DriveInMovieAds'`
 * Internet Archive metadata will be downloaded via the above command. Unfortunately the metadata is XML. I wrote [ArchiveMetaToKodiNfo](https://github.com/Syco54645/ArchiveMetaToKodiNfo) to convert the XML to Kodi style nfo.
 * To use nfo metadata in Plex you need to install the [XBMCnfoMoviesImporter](https://github.com/gboudreau/XBMCnfoMoviesImporter.bundle) plugin and enable it for the repository.
-* Subgenres are not supported in Plex so to pull those I used the fantastic [IMDbPY](https://imdbpy.github.io/) and just call the small python script via PHP.
+* Tags are not supported in Plex so to pull those I used the fantastic [IMDbPY](https://imdbpy.github.io/) and just call the small python script via PHP.
 * sqlite3 - you will have to import the file [grindhouse.sql](/databases/grindhouse.sql)
 * php 5.6.40 with mcrypt
 
@@ -38,7 +38,7 @@ Follow the Installation guide above.
 ## Credits/Shoutouts
 * drpenismd - For putting up with my excitement about this project and providing the name
 * tuna - Again, for putting up with my excitement and talking exploitation cinema with me
-* lnewlf11 - Helping with ideas and helping to prune down a list of 5,000+ subgenres that we wanted to keep. Oh and for watching the films with me
+* lnewlf11 - Helping with ideas and helping to prune down a list of 5,000+ tags that we wanted to keep. Oh and for watching the films with me
 
 
 ## Sitemap

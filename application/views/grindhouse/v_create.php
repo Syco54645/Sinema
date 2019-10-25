@@ -47,11 +47,11 @@
                         <div class="form-group border">
                             <div class="">
                                 <label class="radio-inline">
-                                    <input name="genreSubgenreIntersect" type="radio" ng-value="true" ng-model="model.search.options.genreSubgenreIntersect" />
+                                    <input name="genreTagIntersect" type="radio" ng-value="true" ng-model="model.search.options.genreTagIntersect" />
                                     And
                                 </label>
                                 <label class="radio-inline">
-                                    <input name="genreSubgenreIntersect" type="radio" ng-value="false" ng-model="model.search.options.genreSubgenreIntersect" />
+                                    <input name="genreTagIntersect" type="radio" ng-value="false" ng-model="model.search.options.genreTagIntersect" />
                                     Or
                                 </label>
                             </div>
@@ -61,28 +61,28 @@
                         </div>
 
                         <div class="form-group border">
-                            <label class="control-label " for="subgenre-enable">
-                                <input name="subgenre-enable" id="subgenre-enable" type="checkbox" ng-model="model.search.selected.subgenre" />
+                            <label class="control-label " for="tag-enable">
+                                <input name="tag-enable" id="tag-enable" type="checkbox" ng-model="model.search.selected.tag" />
                                 Tags
                             </label>
 
                             <div class="">
                                 <label class="radio-inline">
-                                    <input name="subgenreMode" type="radio" value="matchAny" ng-model="model.search.options.subgenreMode" ng-disabled="!model.search.selected.subgenre" />
+                                    <input name="tagMode" type="radio" value="matchAny" ng-model="model.search.options.tagMode" ng-disabled="!model.search.selected.tag" />
                                     Match Any
                                 </label>
                                 <label class="radio-inline">
-                                    <input name="subgenreMode" type="radio" value="matchEvery" ng-model="model.search.options.subgenreMode" ng-disabled="!model.search.selected.subgenre" />
+                                    <input name="tagMode" type="radio" value="matchEvery" ng-model="model.search.options.tagMode" ng-disabled="!model.search.selected.tag" />
                                     Match All
                                 </label>
                             </div>
 
                             <selectize
-                                config="selectizeConfigs.subgenre"
-                                id="subgenre"
-                                name="subgenre"
-                                ng-model="model.search.criteria.subgenreId"
-                                ng-disabled="!model.search.selected.subgenre"
+                                config="selectizeConfigs.tag"
+                                id="tag"
+                                name="tag"
+                                ng-model="model.search.criteria.tagId"
+                                ng-disabled="!model.search.selected.tag"
                             ></selectize>
                         </div>
 

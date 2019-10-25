@@ -20,11 +20,11 @@ class Film extends MY_Controller {
         $data = $this->starterData;
 
         $genreId = $this->input->get('genreId');
-        $subgenreId = $this->input->get('subgenreId');
+        $tagId = $this->input->get('tagId');
 
         $options = [
             'genreId' => $genreId,
-            'subgenreId' => $subgenreId,
+            'tagId' => $tagId,
             'orderBy' => ['field' => 'title', 'direction' => 'asc'],
         ];
 
@@ -34,8 +34,8 @@ class Film extends MY_Controller {
             $genres = $this->filmmodel->getGenresForFilm($film['id']);
             $film['genres'] = $genres;
 
-            $subgenres = $this->filmmodel->getSubgenresForFilm($film['id']);
-            $film['subgenres'] = $subgenres;
+            $tags = $this->filmmodel->getTagsForFilm($film['id']);
+            $film['tags'] = $tags;
         }
 
         $data['title'] = "Films (" . count($data['films']) . ")";
@@ -62,7 +62,7 @@ class Film extends MY_Controller {
             $qd = $_POST;
             $id = $this->input->post('id');
             unset($qd['id']);
-            
+
             $this->filmmodel->updateFilm($id, $qd);
 
             $this->session->set_flashdata('success', 'Film Updated Successfully');

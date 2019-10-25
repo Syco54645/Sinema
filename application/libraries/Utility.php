@@ -100,34 +100,34 @@ class Utility {
         return array_filter($splitted);
     }
 
-    public static function getWantedSubgenres($movieSubgenres=[]) {
+    public static function getWantedTags($movieTags=[]) {
 
         $CI =& get_instance();
         $CI->load->model('SettingsModel');
 
-        $keptSubgenres = Utility::splitSemiColon($CI->SettingsModel->getSettingValueByName("Kept Subgenres"));
-        $keptSubgenres = array_map('Utility::slugify', $keptSubgenres);
+        $keptTags = Utility::splitSemiColon($CI->SettingsModel->getSettingValueByName("Kept Tags"));
+        $keptTags = array_map('Utility::slugify', $keptTags);
 
-        $newSubgenres = [];
+        $newTags = [];
 
         // FIXME this is a hack, this needs removed
-        if (!is_array($movieSubgenres)) {
-            $movieSubgenres = [];
+        if (!is_array($movieTags)) {
+            $movieTags = [];
         }
-        foreach ($movieSubgenres as $subgenre) {
-            if (in_array(Utility::slugify($subgenre), $keptSubgenres)) {
-                $newSubgenres[] = Utility::slugify($subgenre);
+        foreach ($movieTags as $tag) {
+            if (in_array(Utility::slugify($tag), $keptTags)) {
+                $newTags[] = Utility::slugify($tag);
             }
         }
-        return $newSubgenres;
+        return $newTags;
     }
 
-    public static function getMovieSubgenres($imdbId) {
+    public static function getMovieTags($imdbId) {
 
         $command = escapeshellcmd('python ./python/keywords.py ' . str_replace('tt', '', $imdbId));
         $output = shell_exec($command);
-        $movieSubgenres = Utility::getWantedSubgenres(json_decode($output));
-        return $movieSubgenres;
+        $movieTags = Utility::getWantedTags(json_decode($output));
+        return $movieTags;
     }
 
     public static function getSettings() {

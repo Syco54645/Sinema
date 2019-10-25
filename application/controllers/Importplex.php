@@ -162,21 +162,21 @@ class ImportPlex extends MY_Controller {
         $movies = $this->filmmodel->getFilms($options);
         foreach ($movies as $k=>$movie) {
 
-            $movieSubgenres = Utility::getMovieSubgenres($movie['imdbId']);
+            $movieTags = Utility::getMovieTags($movie['imdbId']);
             //Utility::debug($movie['imdbId'], false);
 
-            foreach ($movieSubgenres as $subgenre) {
+            foreach ($movieTags as $tag) {
                 $qd = [
-                    "subgenre" => $subgenre,
-                    "subgenre_slug" => Utility::slugify($subgenre),
+                    "tag" => $tag,
+                    "tag_slug" => Utility::slugify($tag),
                 ];
-                $subgenreId = isset($this->filmmodel->getSubgenreBySlug($qd['subgenre_slug'])->id) ? $this->filmmodel->getSubgenreBySlug($qd['subgenre_slug'])->id : null;
+                $tagId = isset($this->filmmodel->getTagBySlug($qd['tag_slug'])->id) ? $this->filmmodel->getTagBySlug($qd['tag_slug'])->id : null;
 
-                if (!$subgenreId) {
-                    $subgenreId = $this->filmmodel->storeSubgenre($qd);
+                if (!$tagId) {
+                    $tagId = $this->filmmodel->storeTag($qd);
                 }
 
-                $this->filmmodel->mapSubgenreToFilm($movie['id'], $subgenreId);
+                $this->filmmodel->mapTagToFilm($movie['id'], $tagId);
             }
         }
         $more = true;

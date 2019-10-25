@@ -136,7 +136,7 @@
                         <div class="step">
                             <div class="step-number">Step 2</div>
                             <div class="step-desc">
-                                This step is more complex. We have to pull subgenre from IMDB via an API. We can batch this in about 30 at a time safely.
+                                This step is more complex. We have to pull tag from IMDB via an API. We can batch this in about 30 at a time safely.
                                 You can tweak this number in settings but eventually you will get to a point where the script fails to run.
                                 The application will continue to the next step automatically.
                             </div>
@@ -149,7 +149,7 @@
                         <div class="form-group">
                             <div>
                                 <button class="btn btn-primary" type="button" ng-click="importMovie(2)" ng-disabled="model.importing">
-                                    Import/Update Subgenres
+                                    Import/Update Tags
                                 </button>
                             </div>
                         </div>

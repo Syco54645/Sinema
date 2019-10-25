@@ -10,7 +10,7 @@
                         <th class="col-md-4">Summary</th>
                         <th class="col-md-1">Thumb</th>
                         <th class="col-md-1">Genres</th>
-                        <th class="col-md-1">Subgenres</th>
+                        <th class="col-md-1">Tags</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,8 +26,8 @@
                             </div>
                         </td>
                         <td class="col-md-1">
-                            <div ng-repeat="subgenre in film.subgenres">
-                                <a href="/admin/films?subgenreId={{ ::subgenre.subgenre_id }}">{{ ::subgenre.subgenre }}</a>
+                            <div ng-repeat="tag in film.tags">
+                                <a href="/admin/films?tagId={{ ::tag.tag_id }}">{{ ::tag.tag }}</a>
                             </div>
                         </td>
                     </tr>

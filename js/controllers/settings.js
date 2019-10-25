@@ -5,12 +5,12 @@ Sinema.controller('SettingsController', ['$scope', '$location', '$http', 'Flash'
   };
 
   $scope.selectizeConfigs = {
-    'kept-subgenres': {
+    'kept-tags': {
       plugins: ['remove_button'],
       create: true,
       delimiter: ';',
-      placeholder: 'Type something to add subgenres to keep',
-      options: viewVars.keptSubgenresArray.map(function(x) { return { item: x }; }),
+      placeholder: 'Type something to add tags to keep',
+      options: viewVars.keptTagsArray.map(function(x) { return { item: x }; }),
       valueField: 'item',
       labelField: 'item',
       persist: false,
@@ -18,7 +18,7 @@ Sinema.controller('SettingsController', ['$scope', '$location', '$http', 'Flash'
   };
 
   $scope.selectizeModels = {
-    'kept-subgenres': viewVars.keptSubgenresArray,
+    'kept-tags': viewVars.keptTagsArray,
   };
 
   $scope.isFieldDisabled = function (setting) {
@@ -39,9 +39,9 @@ Sinema.controller('SettingsController', ['$scope', '$location', '$http', 'Flash'
 
   $scope.save = function () {
 
-    // convert kept subgenres to a string separated by ;
+    // convert kept tags to a string separated by ;
     Flash.clear();
-    $scope.model.settings['kept-subgenres'] = $scope.selectizeModels['kept-subgenres'].join(';');
+    $scope.model.settings['kept-tags'] = $scope.selectizeModels['kept-tags'].join(';');
     var submitData = {
       settings: $scope.model.settings,
     };

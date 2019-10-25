@@ -80,11 +80,11 @@ class Admin extends MY_Controller {
 
         $settings = $this->settingsmodel->getSettings();
         foreach ($settings as $i => $setting) {
-            if ($setting['setting_slug'] == 'kept-subgenres') {
-                $keptSubgenres = $settings[$i]['setting_value'];
-                $keptSubgenresArray = array_map('trim', explode(';', $keptSubgenres));
-                $settings[$i]['setting_value'] = $keptSubgenresArray;
-                $data['keptSubgenresArray'] = $keptSubgenresArray;
+            if ($setting['setting_slug'] == 'kept-tags') {
+                $keptTags = $settings[$i]['setting_value'];
+                $keptTagsArray = array_map('trim', explode(';', $keptTags));
+                $settings[$i]['setting_value'] = $keptTagsArray;
+                $data['keptTagsArray'] = $keptTagsArray;
             }
         }
         $data['settings'] = $settings;
@@ -217,29 +217,29 @@ class Admin extends MY_Controller {
                 $this->filmmodel->mapGenreToFilm($movie['id'], $genreId);
             }
 
-            $movieSubgenres = Utility::getMovieSubgenres($movie['imdbId']);
-            foreach ($movieSubgenres as $subgenre) {
+            $movieTags = Utility::getMovieTags($movie['imdbId']);
+            foreach ($movieTags as $tag) {
                 $qd = [
-                    "subgenre" => $subgenre,
-                    "subgenre_slug" => Utility::slugify($subgenre),
+                    "tag" => $tag,
+                    "tag_slug" => Utility::slugify($tag),
                 ];
 
-                $subgenreId = isset($this->filmmodel->getSubgenreBySlug($qd['subgenre_slug'])->id) ? $this->filmmodel->getSubgenreBySlug($qd['subgenre_slug'])->id : null;
+                $tagId = isset($this->filmmodel->getTagBySlug($qd['tag_slug'])->id) ? $this->filmmodel->getTagBySlug($qd['tag_slug'])->id : null;
 
-                if (!$subgenreId) {
-                    $subgenreId = $this->filmmodel->storeSubgenre($qd);
+                if (!$tagId) {
+                    $tagId = $this->filmmodel->storeTag($qd);
                 }
 
-                $this->filmmodel->mapSubgenreToFilm($movie['id'], $subgenreId);
+                $this->filmmodel->mapTagToFilm($movie['id'], $tagId);
             }
-            Utility::debug($movieSubgenres, true);
+            Utility::debug($movieTags, true);
 
 
             Utility::debug($movie['genre'], true);
 
             $command = escapeshellcmd('python ./test.py ' . str_replace('tt', '', $movie['imdbId']));
             $output = shell_exec($command);
-            $movieSubgenres = Utility::getWantedSubgenres(json_decode($output));
+            $movieTags = Utility::getWantedTags(json_decode($output));
             Utility::debug(json_decode($output), false);
             if (json_decode($output)) {
                 $allSubGenre = array_merge($allSubGenre, json_decode($output));

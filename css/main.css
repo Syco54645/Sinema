@@ -22,7 +22,7 @@
   border-color: #1a7a12; }
 
 .genre-wrapper.disabled,
-.subgenre-wrapper.disabled,
+.tag-wrapper.disabled,
 .preroll-wrapper.disabled {
   background-color: #ccc; }
 

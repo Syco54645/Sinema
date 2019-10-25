@@ -32,9 +32,9 @@ CREATE TABLE `genres` (
     `genre_slug`    TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE `subgenres` (
+CREATE TABLE `tags` (
     `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    `subgenre` TEXT NOT NULL UNIQUE, `subgenre_slug` TEXT NOT NULL UNIQUE
+    `tag` TEXT NOT NULL UNIQUE, `tag_slug` TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE `map_genre_film` (
@@ -43,10 +43,10 @@ CREATE TABLE `map_genre_film` (
     PRIMARY KEY(`film_id`,`genre_id`)
 );
 
-CREATE TABLE `map_subgenre_film` (
+CREATE TABLE `map_tag_film` (
     `film_id` INTEGER NOT NULL,
-    `subgenre_id` INTEGER NOT NULL,
-    PRIMARY KEY(`film_id`,`subgenre_id`)
+    `tag_id` INTEGER NOT NULL,
+    PRIMARY KEY(`film_id`,`tag_id`)
 );
 
 CREATE TABLE IF NOT EXISTS "settings" (
@@ -65,7 +65,7 @@ INSERT INTO settings(setting_name, setting_value, description, sort_order, setti
 VALUES('URL', '', 'URL for Sinema (not used)', 1, 'url', 'text', null);
 
 INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug, widget_type, conditional)
-VALUES('Kept Subgenres', 'Giallo;Slasher;Revenge;Women In Prison;Prison;Pinky Violence;Western', 'List of Subgenre that you want to keep. These are separated by ; in the database.', 500, 'kept-subgenres', 'selectize', null);
+VALUES('Kept Tags', 'Giallo;Slasher;Revenge;Women In Prison;Prison;Pinky Violence;Western', 'List of Tag that you want to keep. These are separated by ; in the database.', 500, 'kept-tags', 'selectize', null);
 
 INSERT INTO settings(setting_name, setting_value, description, sort_order, setting_slug, widget_type, conditional)
 VALUES('Plex Url','','The URL for the plex server in the format "http://<url:port>"',100,'plex-url', 'text', null);

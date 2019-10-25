@@ -5,20 +5,20 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
     search: {
         selected: {
             genre: true,
-            subgenre: true,
+            tag: true,
             prerolls: true,
             trailers: true,
         },
         options: {
-          genreSubgenreIntersect: false,
+          genreTagIntersect: false,
           genreMode: 'matchAny',
-          subgenreMode: 'matchAny',
+          tagMode: 'matchAny',
         },
         criteria: {
             //genre: [],
             genreId: [],
-            //subgenre: [],
-            subgenreId: [],
+            //tag: [],
+            tagId: [],
             prerolls: {
                 stayInSeries: true,
                 selectedSeries: 'color-swirl',
@@ -41,13 +41,13 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
       labelField: 'genre',
       persist: false,
     },
-    subgenre: {
+    tag: {
       plugins: ['remove_button'],
       create: false,
       placeholder: 'Tags',
-      options: viewVars.subgenres,
+      options: viewVars.tags,
       valueField: 'id',
-      labelField: 'subgenre',
+      labelField: 'tag',
       persist: false,
     },
   };
@@ -73,24 +73,24 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
     }
   }
 
-  $scope.selectSubgenre = function (subgenreSlug, subgenreId) {
+  $scope.selectTag = function (tagSlug, tagId) {
 
-    if ($scope.model.search.criteria.subgenre.indexOf(subgenreSlug) != -1) {
-        var index = $scope.model.search.criteria.subgenre.indexOf(subgenreSlug);
+    if ($scope.model.search.criteria.tag.indexOf(tagSlug) != -1) {
+        var index = $scope.model.search.criteria.tag.indexOf(tagSlug);
         if (index !== -1) {
-            $scope.model.search.criteria.subgenre.splice(index, 1);
+            $scope.model.search.criteria.tag.splice(index, 1);
         }
     } else {
-        $scope.model.search.criteria.subgenre.push(subgenreSlug);
+        $scope.model.search.criteria.tag.push(tagSlug);
     }
 
-    if ($scope.model.search.criteria.subgenreId.indexOf(subgenreId) != -1) {
-        var index = $scope.model.search.criteria.subgenreId.indexOf(subgenreId);
+    if ($scope.model.search.criteria.tagId.indexOf(tagId) != -1) {
+        var index = $scope.model.search.criteria.tagId.indexOf(tagId);
         if (index !== -1) {
-            $scope.model.search.criteria.subgenreId.splice(index, 1);
+            $scope.model.search.criteria.tagId.splice(index, 1);
         }
     } else {
-        $scope.model.search.criteria.subgenreId.push(subgenreId);
+        $scope.model.search.criteria.tagId.push(tagId);
     }
 
   }*/
