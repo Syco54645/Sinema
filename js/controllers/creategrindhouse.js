@@ -29,6 +29,9 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
             }
         },
     },
+    assembledFeature: {},
+    command: {},
+    assembledFeatureId: 0,
   };
 
   $scope.selectizeConfigs = {
@@ -108,17 +111,73 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
       data: submitData
     });
 
-    promise.success(function(data) {
-      console.log(data);
-      if (data.status == "success") {
+    promise.success(function(response) {
+      if (response.status == "ok") {
+        $scope.model.assembledFeature = JSON.parse(response.data.assembledFeature);
+        $scope.model.command = JSON.parse(response.data.command);
+        $scope.model.assembledFeatureId = response.data.id;
+        $scope.model.step = 2;
+      }
+    });
+
+    promise.error(function(response) {
+      console.log(response);
+    });
+  }
+
+  $scope.createPlexPlaylist = function () {
+
+    var submitData = {
+      id: $scope.model.assembledFeatureId,
+    };
+
+    var promise = $http({
+      url: '/grindhouse/ajaxCreatePlexPlaylist',
+      method: "POST",
+      data: submitData
+    });
+
+    promise.success(function(response) {
+      if (response.status == "ok") {
 
       }
     });
 
-    promise.error(function(data) {
-      console.log(data);
+    promise.error(function(response) {
+      console.log(response);
     });
   }
 
+  $scope.isSpoiler = function (type) {
+
+    var isSpoiler = false;
+    switch (type) {
+        case 'Intro Preroll':
+            isSpoiler = true;
+            break;
+        case 'Trailer':
+            isSpoiler = true;
+            break;
+        case 'Feature Presentation Preroll':
+            isSpoiler = true;
+            break;
+        case 'Film':
+            isSpoiler = false;
+            break;
+        case 'Intermission Preroll':
+            isSpoiler = true;
+            break;
+        case 'Joiner Preroll':
+            isSpoiler = true;
+            break;
+        case 'Outro Preroll':
+            isSpoiler = true;
+        default:
+            isSpoiler = true;
+            break;
+    }
+
+    return isSpoiler;
+  }
 
 }]);

@@ -15,6 +15,7 @@ class Grindhouse extends MY_Controller {
         $this->load->model('FilmModel', 'filmmodel');
         $this->load->model('PrerollModel', 'prerollmodel');
         $this->load->model('TrailerModel', 'trailermodel');
+        $this->load->model('GrindhouseModel', 'grindhousemodel');
     }
 
     public function index() {
@@ -75,30 +76,80 @@ class Grindhouse extends MY_Controller {
                 'items' => $this->trailermodel->getRandomTrailers($_POST['search']['criteria']['trailers']['number'])
             ];
             $assembledFeature = $this->_assembleFeature($format, $sortedPrerolls, $selectedFilms, $trailers);
-            $this->_processAssembledFeature($assembledFeature);
-            /*'introPrerolls' => [
-                'seriesIndexes' => [],
-                'prerollObjects' => [],
-                'seriesNotFoundError' => false,
-            ],*/
+            //$this->_processAssembledFeatureText($assembledFeature);
+            $command = $this->_processAssembledFeatureJson($assembledFeature);
 
-            //Utility::debug($sortedPrerolls, true);
-            //Utility::debug($filmIds, true);
+            $qd = [
+                'name' => 'Sinema - ' . date('Y-m-d H:i:s'),
+                'tagline' => '',
+                'command' => $command,
+                'command_version' => '.1',
+            ];
+
+            $grindhouseId = $this->grindhousemodel->storeGrindhouse($qd);
+
+            $response = array(
+                'command' => $command,
+                'assembledFeature' => json_encode($assembledFeature),
+                'id' => $grindhouseId,
+            );
+            $jsonResponse = new JsonResponse();
+
+            echo $jsonResponse->create('ok', '', $response);
         }
     }
 
-    private function _processAssembledFeature($assembledFeature) {
+    public function ajaxCreatePlexPlaylist() {
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $_POST = Utility::getPost();
+            $id = $this->input->post('id');
 
+            echo Utility::createPlexPlaylist($id);
+        }
+    }
+
+    private function _processAssembledFeatureText($assembledFeature) {
+
+        $return = "";
         foreach($assembledFeature as $featureItem) {
+
             if ($featureItem['type'] == 'Trailer') {
-                echo "<b>" . $featureItem['type'] . "</b>" . ': ';
+                $return .= "<b>" . $featureItem['type'] . "</b>" . ': ';
                 foreach($featureItem['item'] as $item) {
-                    echo $item['id'] . ' ' . $item['title'] . "<br>";
+                    $return .= $item['id'] . ' ' . $item['title'] . "<br>";
                 }
             } else {
-                echo "<b>" . $featureItem['type'] . "</b>" . ': ' . $featureItem['item']['id'] . ' ' . $featureItem['item']['title'] . "<br>";
+                $return .= "<b>" . $featureItem['type'] . "</b>" . ': ' . $featureItem['item']['id'] . ' ' . $featureItem['item']['title'] . "<br>";
             }
         }
+
+        return $return;
+    }
+
+    private function _processAssembledFeatureJson($assembledFeature) {
+
+        $return = [];
+        foreach($assembledFeature as $featureItem) {
+            if ($featureItem['type'] == 'Trailer') {
+                $temp = [];
+                foreach($featureItem['item'] as $item) {
+                    $temp[] = [
+                        'libraryId' => $item['library_id'],
+                        'title' => $item['title'],
+                        'id' => $item['id'],
+                    ];
+                }
+            } else {
+                $temp = [
+                    'libraryId' => $featureItem['item']['library_id'],
+                    'title' => $featureItem['item']['title'],
+                    'id' => $featureItem['item']['id'],
+                ];
+            }
+            $return[] = $temp;
+        }
+
+        return json_encode($return);
     }
 
     private function _assembleFeature($format, $sortedPrerolls, $selectedFilms, $trailers) {

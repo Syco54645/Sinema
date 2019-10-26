@@ -124,10 +124,24 @@ class Utility {
 
     public static function getMovieTags($imdbId) {
 
-        $command = escapeshellcmd('python ./python/keywords.py ' . str_replace('tt', '', $imdbId));
+        $command = "export WORKON_HOME=" . FCPATH . "python/.local; cd " . FCPATH . "python; pipenv run python keywords.py ". str_replace('tt', '', $imdbId) . " 2>&1";
         $output = shell_exec($command);
         $movieTags = Utility::getWantedTags(json_decode($output));
         return $movieTags;
+    }
+
+    public static function createPlexPlaylist($id) {
+
+        $command = "export WORKON_HOME=" . FCPATH . "python/.local; cd " . FCPATH . "python; pipenv run python playlist.py ". $id . " 2>&1";
+        $output = shell_exec($command);
+        return $output;
+    }
+
+    public static function initPipenv() {
+
+        $command = "export WORKON_HOME=" . FCPATH . "python/.local; cd " . FCPATH . "python; pipenv install 2>&1";
+        $output = shell_exec($command);
+        return $output;
     }
 
     public static function getSettings() {

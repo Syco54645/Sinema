@@ -125,6 +125,7 @@ class ImportPlex extends MY_Controller {
             if ($this->filmmodel->checkFilmExists($movie['id']) === 0) {
                 $this->filmmodel->storeFilm($qd);
             } else {
+                unset($qd['id']);
                 $this->filmmodel->updateFilm($movie['id'], $qd);
             }
 
@@ -187,7 +188,7 @@ class ImportPlex extends MY_Controller {
         return ['status' => 'success', 'more' => $more ];
     }
 
-    private function _plex_preroll_step_one($service_url) {
+    private function _plex_preroll_step_one($service_url, $libraryId) {
         /*
         ** insert movies
         ** insert genres
@@ -218,11 +219,15 @@ class ImportPlex extends MY_Controller {
                 'guid' => $preroll['guid'],
                 'thumbUrl' => $preroll['thumbUrl'],
                 'artUrl' => $preroll['artUrl'],
+                'library_id' => $libraryId,
             ];
 
             // insert the film if it doesnt exist
             if ($this->prerollmodel->checkPrerollExists($preroll['id']) === 0) {
                 $this->prerollmodel->storePreroll($qd);
+            } else {
+                unset($qd['id']);
+                $this->prerollmodel->updatePreroll($preroll['id'], $qd);
             }
         }
         // todo add something so that we know if it fails
@@ -258,6 +263,7 @@ class ImportPlex extends MY_Controller {
             if ($this->trailermodel->checkTrailerExists($movie['id']) === 0) {
                 $this->trailermodel->storeTrailer($qd);
             } else {
+                unset($qd['id']);
                 $this->trailermodel->updateTrailer($movie['id'], $qd);
             }
         }
@@ -288,7 +294,7 @@ class ImportPlex extends MY_Controller {
         switch ($type) {
             case 'preroll':
                 if ($step == 1) {
-                    $response = $this->_plex_preroll_step_one($service_url);
+                    $response = $this->_plex_preroll_step_one($service_url, $libraryId);
                 }
                 break;
             case 'movie':
