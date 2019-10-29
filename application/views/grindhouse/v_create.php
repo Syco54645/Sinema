@@ -97,7 +97,7 @@
                                     <input name="stayInSeries" id="stayInSeries" type="checkbox" ng-model="model.search.criteria.prerolls.stayInSeries" ng-disabled="!model.search.selected.prerolls" />
                                     Preferred Series
                                 </label>
-
+                                <br>
                                 <label class="control-label " for="series">
                                    Series
                                 </label>
