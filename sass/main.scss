@@ -58,6 +58,27 @@
     }
 }
 
-.plex-library-item {
-    cursor: pointer;
+.plex-library-wrapper {
+    max-height: 300px;
+    overflow-y: scroll;
+    .plex-library-item {
+        cursor: pointer;
+    }
+}
+
+
+.dropdown-submenu {
+    position: relative;
+    a::after {
+        transform: rotate(-90deg);
+        position: absolute;
+        right: 6px;
+        top: .8em;
+    }
+    .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-left: .1rem;
+        margin-right: .1rem;
+    }
 }
