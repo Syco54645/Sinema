@@ -60,6 +60,10 @@ $route['calendar'] = 'grindhouse/calendar';
 $route['admin'] = 'admin';
 $route['admin/import-plex'] = 'importplex/import_plex';
 $route['ajax/import-plex/(:num)'] = 'importplex/ajaxImportPlex/$1';
+
+$route['admin/export-plex'] = 'importplex/export_plex';
+$route['ajax/export-plex'] = 'importplex/ajaxExportPlex';
+
 $route['admin/settings'] = 'admin/settings';
 $route['ajax/save-settings'] = 'admin/ajaxSaveSettings';
 

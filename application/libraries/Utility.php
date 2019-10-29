@@ -90,7 +90,17 @@ class Utility {
 
     public static function slugify($name) {
 
-        return strtolower(str_replace(" ", "-", $name));
+        $slug = strtolower(trim($name));
+
+        $search = array(' ', '&', '\r\n', '\n', '+', ',');
+        $replace = '-';
+        $slug = str_replace($search, $replace, $slug);
+
+        $search = array('/[^A-Za-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/');
+        $replace = array('', '-', '');
+        $slug = preg_replace($search, $replace, $slug);
+
+        return $slug;
     }
 
     public static function splitSemiColon($string) {
