@@ -435,7 +435,7 @@ class ImportPlex extends MY_Controller {
 
     private function _generateCsvHeaderLine($maxSubjects, $containsFile = true) {
 
-        $headerLine = "identifier,file,description,year,title,collection";
+        $headerLine = "identifier,file,mediatype,description,year,title,collection";
         if (!$containsFile) {
             $headerLine = "identifier,description,year,title,collection";
         }
@@ -535,6 +535,7 @@ class ImportPlex extends MY_Controller {
             $line[] = $identifier;
             if ($containsFile) {
                 $line[] = $movie['file'];
+                $line[] = 'movie';
             }
             $line[] = $movie['summary'];
             $line[] = $movie['year'];
