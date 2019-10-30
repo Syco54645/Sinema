@@ -421,7 +421,8 @@ class ImportPlex extends MY_Controller {
             $maxSubjects['genre'] = count($movie['genre']);
         }
         if (count($movie['director']) > $maxSubjects['director']) {
-            $maxSubjects['director'] = count($movie['director']);
+            //$maxSubjects['director'] = count($movie['director']);
+            $maxSubjects['director'] = 1;
         }
         if (count($movie['writer']) > $maxSubjects['writer']) {
             $maxSubjects['writer'] = count($movie['writer']);
@@ -468,15 +469,19 @@ class ImportPlex extends MY_Controller {
 
         foreach ($maxSubjects as $subject => $count) {
             if (is_array($movie[$subject])) {
-                foreach ($movie[$subject] as $label) {
-                    $line[] = $label;
+                foreach ($movie[$subject] as $idx => $subjectValue) {
+
+                    if ($idx+1 > $count) { // stop if we reach the max subjects allowed. this was done to fix directors.
+                        continue;
+                    }
+                    $line[] = $subjectValue;
                 }
             }
 
-            $count = count($movie[$subject]);
-            while ($count < $maxSubjects[$subject]) {
+            $movieSubjectCount = count($movie[$subject]);
+            while ($movieSubjectCount < $maxSubjects[$subject]) {
                 $line [] = "";
-                $count++;
+                $movieSubjectCount++;
             }
         }
     }
