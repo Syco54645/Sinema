@@ -36,7 +36,6 @@ Sinema.controller('ExportPlexController', ['$scope', '$location', '$http', funct
       if (response.status == "ok") {
         $scope.model.exporting = false;
         $scope.model.csv = response.data.csv;
-        console.log(response.data.csv)
       }
     });
     promise.error(function(response) {

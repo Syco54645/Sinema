@@ -106,6 +106,13 @@
 
         </div>
     </div>
-    <textarea ng-model="model.csv"></textarea>
+    <div class="row" ng-if="model.csv">
+        <div class="col-md-6">
+            <div class="help-block">Copy the contents of this box and save in a csv file. Verify the contents and then run with the command</div>
+            <div class="help-block" ng-if="model.exportType == 'file'">./ia upload --spreadsheet=<b>file</b>.csv</div>
+                <div class="help-block" ng-if="model.exportType == 'metadata'">./ia metadata --spreadsheet=<b>file</b>.csv</div>
+            <textarea readonly class="form-control csv-result" ng-model="model.csv"></textarea>
+        </div>
+    </div>
 </div>
 <?php
