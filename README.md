@@ -5,14 +5,24 @@ Sinema is an automation tool to help recreate the Grindhouse experience of the 7
 ## Features (expanding rapidly at this point)
 
 * Import films from Plex
+  * Import "tags" using IMDbPY
 * Import prerolls from Plex
 * Import trailers from Plex
-* Import "tags" using IMDbPY
 * Create double feature from films using genre/tag
-   * Preroll support is being worked on. They are pulled in but not ordered correctly
+   * Prerolls
+     * If a series is specified and no preroll of the needed type is found it will grab a random preroll of the correct type.
+   * Trailers
+     * Count is currently hard coded
+     * They are just random trailers, no metadata info is stored for trailers.
+   * Films
+     * Currently pull from only one library
+     * Currently hard coded to 2
+   * Creates a Plex playlist of the double feature
 * Manage prerolls
 * Manage films
 * Manage trailers
+* Export collection from Plex
+  * This generates a CSV that you can use with [ia](https://internetarchive.readthedocs.io/en/stable/cli.html) to upload all of a library to archive.org, automatically filling out the metadata
 
 ## Installation
 
@@ -25,6 +35,7 @@ Sinema is an automation tool to help recreate the Grindhouse experience of the 7
 * Tags are not supported in Plex so to pull those I used the fantastic [IMDbPY](https://imdbpy.github.io/) and just call the small python script via PHP.
 * sqlite3 - you will have to import the file [grindhouse.sql](/databases/grindhouse.sql)
 * php 5.6.40 with mcrypt
+* Python with pipenv library accessible to the user running apache
 
 ## Configuring Development Environment
 
@@ -49,10 +60,13 @@ Follow the Installation guide above.
         * Past
         * Calendar - may be implementing this eventually
     * Admin
-        * Import From Plex - user locked
-        * Manage Films - user locked
-        * Manage Prerolls - user locked
-        * Manage Trailers - user locked
+        * Plex - user locked
+          * Import From Plex
+          * Export From Plex
+        * Manage - user locked
+          * Films
+          * Prerolls
+          * Manage Trailers
         * Settings - user locked
         * Login/Logout
     * Films
