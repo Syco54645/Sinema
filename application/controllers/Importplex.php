@@ -369,7 +369,7 @@ class ImportPlex extends MY_Controller {
 
         $plexApiKey = $this->config->sinemaSettings['plex-api-token'];
         $_POST = Utility::getPost();
-        $type = $this->input->post('type');
+        $libraryType = $this->input->post('libraryType');
         $libraryId = $this->input->post('libraryId');
 
         $service_url = sprintf(Utility::getPlexUrl("library"), $libraryId, $plexApiKey);
@@ -377,56 +377,127 @@ class ImportPlex extends MY_Controller {
         $get_data = $this->filmmodel->callAPI('GET', $service_url, false);
         $get_data_array = json_decode($get_data, TRUE);
 
-        $maxSubjects = 0;
+        $maxSubjects = [
+            'country' => 0,
+            'genre' => 0,
+            'director' => 0,
+            'writer' => 0,
+            'role' => 0,
+        ];
+
         $movies = [];
         foreach($get_data_array['MediaContainer']["Metadata"] as $k=>$video) {
             $movie = $this->_get_movie_data_from_plex_object($video);
             $movie = $this->_get_export_data_from_plex_object($video, $movie);
-            //Utility::debug($movie, true);
 
-            $qd = [
-                'id' => $movie['id'],
-                'title' => $movie['title'],
-                'studio' => $movie['studio'],
-                'rating' => $movie['rating'],
-                'year' => $movie['year'],
-                'summary' => $movie['summary'],
-                'thumb' => $movie['thumb'],
-                'art' => $movie['art'],
-                'guid' => $movie['guid'],
-                'imdbId' => $movie['imdbId'],
-                'thumbUrl' => $movie['thumbUrl'],
-                'artUrl' => $movie['artUrl'],
-                'library_id' => $libraryId,
-            ];
-            if (count($movie['genre']) > $maxSubjects) {
-                $maxSubjects = count($movie['genre']);
-            }
+            $this->_getMaxSubjects($maxSubjects, $movie);
+
             $movies[] = $movie;
-
-            //echo "identifier,file,description,subject[0],subject[1],subject[2],title,creator,date,collection";
-
-            //Utility::debug($qd, true);
         }
+//Utility::debug($maxSubjects, true);
+        $csvResult = $this->_create_csv($movies, $maxSubjects);
 
-        $csv = $this->_create_csv($movies, $maxSubjects);
+        $csv = $csvResult['csv'];
+        $duplicates = $csvResult['duplicates'];
+
 
         // todo add something so that we know if it fails
 
         $response = array(
             'csv' => $csv,
+            'duplicates' => $duplicates,
         );
         $jsonResponse = new JsonResponse();
 
         echo $jsonResponse->create('ok', '', $response);
     }
 
+    private function _getMaxSubjects(&$maxSubjects, $movie) {
+
+        if (count($movie['country']) > $maxSubjects['country']) {
+            $maxSubjects['country'] = count($movie['country']);
+        }
+        if (count($movie['genre']) > $maxSubjects['genre']) {
+            $maxSubjects['genre'] = count($movie['genre']);
+        }
+        if (count($movie['director']) > $maxSubjects['director']) {
+            $maxSubjects['director'] = count($movie['director']);
+        }
+        if (count($movie['writer']) > $maxSubjects['writer']) {
+            $maxSubjects['writer'] = count($movie['writer']);
+        }
+        if (count($movie['role']) > $maxSubjects['role']) {
+            $maxSubjects['role'] = count($movie['role']);
+        }
+
+        return $maxSubjects;
+    }
+
+    private function _generateCsvHeaderLine($maxSubjects, $containsFile = true) {
+
+        $headerLine = "identifier,file,description,year,title,collection";
+        if (!$containsFile) {
+            $headerLine = "identifier,description,year,title,collection";
+        }
+
+        foreach ($maxSubjects as $subject => $count) {
+
+            switch ($subject) {
+                case 'genre':
+                    $label = "subject[%s]";
+                    break;
+
+                case 'role':
+                    $label = "actor[%s]";
+                    break;
+
+                default:
+                    $label = $subject . "[%s]";
+                    break;
+            }
+
+            for ($i = 0; $i < $count; $i++) {
+                $headerLine .= ',' . sprintf($label, $i);
+            }
+        }
+
+        return $headerLine;
+    }
+
+    private function _addRepeaterToLine(&$line, $movie, $maxSubjects) {
+
+        foreach ($maxSubjects as $subject => $count) {
+            if (is_array($movie[$subject])) {
+                foreach ($movie[$subject] as $label) {
+                    $line[] = $label;
+                }
+            }
+
+            $count = count($movie[$subject]);
+            while ($count < $maxSubjects[$subject]) {
+                $line [] = "";
+                $count++;
+            }
+        }
+    }
+
     private function _create_csv($movies, $maxSubjects) {
 
-        $line = "";
+        $collectionName = $this->input->post('collectionName');
+        $exportType = $this->input->post('exportType');
+        $identifierPrefix = $this->input->post('identifierPrefix');
+
+        $containsFile = true;
+        if ($exportType == 'metadata') {
+            $containsFile = false;
+        }
+
+        $headerLine = $this->_generateCsvHeaderLine($maxSubjects, $containsFile);
         $csv = [
-            "identifier,file,description,year,subject[0],subject[1],title,collection"
+            $headerLine,
         ];
+
+        $duplicates = [];
 
         foreach ($movies as $movie) {
             /*
@@ -445,33 +516,74 @@ class ImportPlex extends MY_Controller {
             if (!empty($movie['summary'])) continue;
             */
             $line = [];
-            $line[] = substr('sinema-trailer_' . Utility::Slugify($movie['title']) ,0, 50);
-            $line[] = $movie['file'];
+            // todo make the identiferPrefix a variable
+            $identiferPrefix = 'sinema-trailer_';
+            $idenfifierResults = $this->_createIdentifier($csv, $movie, $identiferPrefix);
+            $identifier = $idenfifierResults['identifier'];
+            if ($idenfifierResults['duplicate'] == true) {
+                $duplicates[] = $movie;
+            }
+
+            /*
+            $missing = [
+                'sinema-trailer_savage-weekend',
+            ];
+            if (in_array($identifier, $missing)) continue;
+            */
+
+            //Utility::debug($identifier, true);
+            $line[] = $identifier;
+            if ($containsFile) {
+                $line[] = $movie['file'];
+            }
             $line[] = $movie['summary'];
             $line[] = $movie['year'];
-            if (is_array($movie['genre'])) {
-                foreach ($movie['genre'] as $genre) {
-                    $line[] = $genre;
-                }
-            }
-
-            $genreCount = count($movie['genre']);
-            while ($genreCount < $maxSubjects) {
-                $line [] = "";
-                $genreCount++;
-            }
-
             $line[] = $movie['title'] . ' [' . $movie['year'] . '] - Trailer';
-            $line[] = "opensource_movies";
+            $line[] = $collectionName;
+
+            $this->_addRepeaterToLine($line, $movie, $maxSubjects);
 
             $stringLine = $this->_arrayToCsvLine($line);
             $csv[] = $stringLine;
         }
-
         $csv = implode("\r\n", $csv);
 
-        return $csv;
+        return ['csv' => $csv, 'duplicates' => $duplicates ];
 
+    }
+
+    private function _createIdentifier($csv, $movie, $identiferPrefix) {
+
+        $identifier = $identiferPrefix . Utility::Slugify($movie['title']);
+        $identifier = substr($identifier ,0, 50);
+
+        $duplicate = false;
+        $hasYear = false;
+        $ct = 0;
+        while ($this->_substr_in_array($identifier, $csv)) {
+            $length = 50 - (strlen($identiferPrefix) + strlen($movie['year']) + 1);
+            $shortenedTitle = substr($movie['title'], 0, $length);
+            $identifier = $identiferPrefix . Utility::Slugify($shortenedTitle . ' ' . $movie['year']);
+            if ($hasYear == true) {
+                $length = 50 - (strlen($identiferPrefix) + strlen($movie['year']) + 3);
+                $shortenedTitle = substr($movie['title'], 0, $length);
+                $identifier = $identiferPrefix . Utility::Slugify($shortenedTitle . ' ' . $movie['year'] . ' ' . $ct);
+            }
+            $hasYear = true;
+            $duplicate = true;
+            $ct++;
+        }
+
+        return ['identifier' => $identifier, 'duplicate' => $duplicate];
+    }
+
+    private function _substr_in_array($needle, array $haystack) {
+
+        $filtered = array_filter($haystack, function ($item) use ($needle) {
+            return false !== strpos($item, $needle);
+        });
+
+        return !empty($filtered);
     }
 
     private function _arrayToCsvLine($values) {

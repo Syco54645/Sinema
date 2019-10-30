@@ -1,11 +1,14 @@
 Sinema.controller('ExportPlexController', ['$scope', '$location', '$http', function($scope, $location, $http) {
 
   $scope.model = {
-    importType: '--------',
+    libraryType: '--------',
     libraryId: null,
-    importing: false,
+    exporting: false,
     step: 1,
     csv: null,
+    collectionName: 'sinema-trailers',
+    exportType: 'file',
+    identifierPrefix: 'sinema-trailer',
   };
 
   $scope.clickPlexLibrary = function (id, title) {
@@ -15,10 +18,12 @@ Sinema.controller('ExportPlexController', ['$scope', '$location', '$http', funct
   $scope.export = function (step) {
 
     var submitData = {
-      type: $scope.model.importType,
+      libraryType: $scope.model.libraryType,
+      libraryId: $scope.model.libraryId,
+      collectionName: $scope.model.collectionName,
+      exportType: $scope.model.exportType,
     };
-    submitData.libraryId = $scope.model.libraryId;
-//    $scope.model.importing = true;
+//    $scope.model.exporting = true;
 
     var promise = $http({
       url: '/ajax/export-plex',
@@ -29,14 +34,14 @@ Sinema.controller('ExportPlexController', ['$scope', '$location', '$http', funct
    promise.success(function(response) {
       console.log(response);
       if (response.status == "ok") {
-        $scope.model.importing = false;
+        $scope.model.exporting = false;
         $scope.model.csv = response.data.csv;
         console.log(response.data.csv)
       }
     });
     promise.error(function(response) {
       console.log(response);
-      $scope.model.importing = false;
+      $scope.model.exporting = false;
     });
   }
 

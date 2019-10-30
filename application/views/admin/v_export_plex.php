@@ -55,8 +55,8 @@
 
                         <div class="import-mode-wrapper">
                             <div class="form-group ">
-                                <label class="control-label" for="import-type">Type</label>
-                                <select class="form-control" name="import-type" id="import-type" ng-model="model.importType">
+                                <label class="control-label" for="type">Type</label>
+                                <select class="form-control" name="type" id="type" ng-model="model.libraryType">
                                     <option>--------</option>
                                     <option value="movie">Movies</option>
                                     <option value="preroll" ng-if="viewVars.sinemaSettings['enable-prerolls'] == '1'">Prerolls</option>
@@ -71,10 +71,28 @@
                                     Show Plex Libraries
                                 </button>
                             </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="identifier-prefix">Identifer Prefix</label>
+                                <input class="form-control" id="identifier-prefix" name="identifier-prefix" type="text" ng-model="model.identifierPrefix" />
+                                <div class="help-block">Try to keep this short. Identifiers can only be 50 characters total.</div>
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="collection-name">Collection Name</label>
+                                <input class="form-control" id="collection-name" name="collection-name" type="text" ng-model="model.collectionName" />
+                                <div class="help-block">Collection you are allowed to upload to on archive.org. Leave default if you are unsure.</div>
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="export-type">Export Type</label>
+                                <select class="form-control" name="export-type" id="export-type" ng-model="model.exportType">
+                                    <option value="file">File</option>
+                                    <option value="metadata">Metadata</option>
+                                </select>
+                                <div class="help-block">Choose file if you are uploading new file. Choose metadata if you are updating metadata.</div>
+                            </div>
                             <div class="form-group">
                                 <div>
-                                    <button class="btn btn-primary" type="button" ng-click="export(1)" ng-disabled="model.importing">
-                                        Export Movies
+                                    <button class="btn btn-primary" type="button" ng-click="export(1)" ng-disabled="model.exporting">
+                                        Generate CSV
                                     </button>
                                 </div>
                             </div>
@@ -88,6 +106,6 @@
 
         </div>
     </div>
-            <textarea ng-model="model.csv"></textarea>
+    <textarea ng-model="model.csv"></textarea>
 </div>
 <?php
