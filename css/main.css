@@ -49,23 +49,92 @@
   .plex-library-wrapper .plex-library-item {
     cursor: pointer; }
 
-.dropdown-submenu {
-  position: relative; }
-  .dropdown-submenu a::after {
-    transform: rotate(-90deg);
-    position: absolute;
-    right: 6px;
-    top: .8em; }
-  .dropdown-submenu .dropdown-menu {
-    top: 0;
-    left: 100%;
-    margin-left: .1rem;
-    margin-right: .1rem; }
-
+/* .dropdown-submenu {
+    position: relative;
+    a::after {
+        transform: rotate(-90deg);
+        position: absolute;
+        right: 6px;
+        top: .8em;
+    }
+    .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-left: .1rem;
+        margin-right: .1rem;
+    }
+} */
 .csv-result {
   height: 400px !important; }
 
 #calendar-dropdown::after {
   display: none !important; }
+
+/* link:hover, body>.navbar-collapse .nav li .nav-link:hover,
+.sidebar .nav li:hover .nav-link, body>.navbar-collapse .nav li:hover .nav-link,
+.nav .nav-item.sb-dropdown .nav-link:hover, .nav .nav-item.sb-dropdown .nav-link:focus {
+    background: initial !important;
+}
+
+.sidebar .nav li.sb-dropdown .nav-link, body>.navbar-collapse .nav li .nav-link,
+.sidebar .nav .nav-item.sb-dropdown .nav-link, body>.navbar-collapse .nav .nav-link {
+    margin: 0;
+} */
+[class^="sb"] {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px; }
+
+.sb-dropdown {
+  opacity: 1;
+  margin: 7px 15px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  cursor: pointer;
+  padding-bottom: 5px; }
+  .sb-dropdown .nav-link {
+    padding: 5px 15px !important;
+    margin: 0px 0px !important; }
+    .sb-dropdown .nav-link:hover {
+      background: rgba(255, 255, 255, 0.5) !important; }
+  .sb-dropdown ul {
+    list-style: none;
+    padding-top: 10px; }
+  .sb-dropdown .sb-dropdown-container {
+    display: none;
+    padding-left: 20px;
+    padding-right: 20px; }
+    .sb-dropdown .sb-dropdown-container .sb-dropdown-item {
+      padding-left: 10px;
+      padding-right: 10px; }
+      .sb-dropdown .sb-dropdown-container .sb-dropdown-item.active {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.23); }
+      .sb-dropdown .sb-dropdown-container .sb-dropdown-item:hover {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.5); }
+      .sb-dropdown .sb-dropdown-container .sb-dropdown-item .sb-dropdown-nav-link {
+        margin: 0;
+        line-height: 31px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        display: inline-flex;
+        color: white;
+        width: 100%; }
+  .sb-dropdown.open {
+    background: rgba(255, 255, 255, 0.13); }
+    .sb-dropdown.open .nav-link {
+      background: rgba(255, 255, 255, 0.13); }
+    .sb-dropdown.open .sb-dropdown-container {
+      display: block; }
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+  float: right;
+  padding-right: 8px; }
 
 /*# sourceMappingURL=main.css.map */

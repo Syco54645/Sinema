@@ -8,6 +8,14 @@ var Sinema = angular.module('Sinema', ngModules);
 
 Sinema.controller('RootController', ['$rootScope', '$http', '$timeout', '$scope', function($rootScope, $http, $timeout, $scope) {
   $rootScope.viewVars = viewVars;
+
+  $rootScope.pageTitle = function () {
+    return viewVars.title ? viewVars.title: 'GRINDHAUS!!!!';
+  }
+
+  $rootScope.pageSubtitle = function () {
+    return viewVars.subtitle ? viewVars.subtitle: null;
+  }
 }]);
 
 Sinema.config(function($locationProvider) {
