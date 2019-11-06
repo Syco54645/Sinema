@@ -1,8 +1,8 @@
 <script type="text/javascript" src="/js/vendor/datetimepicker.js"></script>
 <script type="text/javascript" src="/js/vendor/datetimepicker.templates.js"></script>
-<script type="text/javascript" src="/js/controllers/editgrindhouse.js"></script>
 <script type="text/javascript" src="/js/vendor/dateTimeInput.js"></script>
 <link rel="stylesheet" href="/css/vendor/datetimepicker.css">
+<script type="text/javascript" src="/js/controllers/editgrindhouse.js"></script>
 <div class="edit-grindhouse row" ng-controller="EditGrindhouseController">
     <div class="col-md-6">
         <div class="flash-data">
