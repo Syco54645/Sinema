@@ -43,6 +43,7 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
       valueField: 'id',
       labelField: 'genre',
       persist: false,
+      searchField: 'genre'
     },
     tag: {
       plugins: ['remove_button'],
@@ -52,6 +53,7 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
       valueField: 'id',
       labelField: 'tag',
       persist: false,
+      searchField: 'tag'
     },
   };
 
@@ -114,32 +116,12 @@ Sinema.controller('CreateGrindhouseController', ['$scope', '$location', '$http',
     promise.success(function(response) {
       if (response.status == "ok") {
         $scope.model.assembledFeature = JSON.parse(response.data.assembledFeature);
+        viewVars.assembledFeature = $scope.model.assembledFeature;
         $scope.model.command = JSON.parse(response.data.command);
         $scope.model.assembledFeatureId = response.data.id;
         $scope.model.step = 2;
-      }
-    });
-
-    promise.error(function(response) {
-      console.log(response);
-    });
-  }
-
-  $scope.createPlexPlaylist = function () {
-
-    var submitData = {
-      id: $scope.model.assembledFeatureId,
-    };
-
-    var promise = $http({
-      url: '/grindhouse/ajaxCreatePlexPlaylist',
-      method: "POST",
-      data: submitData
-    });
-
-    promise.success(function(response) {
-      if (response.status == "ok") {
-
+        var grindhouseId = response.data.id;
+        window.location.href = "/admin/grindhouse/edit/" + grindhouseId;
       }
     });
 

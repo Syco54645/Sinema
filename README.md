@@ -97,3 +97,5 @@ Follow the Installation guide above.
 * multiple library support - partially implemented
 * lock ajax calls to being logged in
 * error handling on library import if already imported
+* store the file path AND the thumbnails so that we can completely remove plex reliance
+  * make the export work agnostic of plex

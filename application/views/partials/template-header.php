@@ -11,24 +11,28 @@
     <link rel="apple-touch-icon" href="icon.png">
     <!-- Place favicon.ico in the root directory -->
 
-    <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/boiler-reset.css">
-    <link rel="stylesheet" href="/css/selectize.css">
+    <link rel="stylesheet" href="/css/vendor/normalize.css">
+    <link rel="stylesheet" href="/css/vendor/boiler-reset.css">
+    <link rel="stylesheet" href="/css/vendor/selectize.css">
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/angular-flash.css">
-    <link rel="stylesheet" href="/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/vendor/angular-flash.css">
+    <link rel="stylesheet" href="/css/vendor/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/vendor/font-awesome.min.css">
 
-    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="/js/selectize.js"></script>
-    <script type="text/javascript" src="/js//angular-1.5.8.min.js"></script>
-    <script type="text/javascript" src="/js/angular-filter-0.5.17.min.js"></script>
-    <script type="text/javascript" src="/js/angular-flash.min.js"></script>
-    <script type="text/javascript" src="/js/angular-selectize.js"></script>
+    <script type="text/javascript" src="/js/vendor/moment.js"></script>
+    <script type="text/javascript" src="/js/vendor/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/js/vendor/selectize.js"></script>
+    <script type="text/javascript" src="/js/vendor/angular-1.5.8.min.js"></script>
+    <script type="text/javascript" src="/js/vendor/angular-filter-0.5.17.min.js"></script>
+    <script type="text/javascript" src="/js/vendor/angular-flash.min.js"></script>
+    <script type="text/javascript" src="/js/vendor/angular-selectize.js"></script>
+
+    <script type="text/javascript">viewVars = <?php echo json_encode($this->_ci_cached_vars); ?></script>
+
     <script type="text/javascript" src="/js/app.js"></script>
     <meta name="theme-color" content="#fafafa">
 </head>
 
-<script type="text/javascript">viewVars = <?php echo json_encode($this->_ci_cached_vars); ?></script>
 
 <body>
     <!--[if IE]>

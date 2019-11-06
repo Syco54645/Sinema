@@ -27,6 +27,69 @@ class Grindhouse extends MY_Controller {
         $this->load->view('partials/template-footer', $data);
     }
 
+    public function manage() {
+        $data = $this->starterData;
+
+        $options = [];
+
+        $data['grindhouses'] = $this->grindhousemodel->getGrindhouses($options);
+
+        $data['title'] = "Grindhouses (" . count($data['grindhouses']) . ")";
+
+        $this->load->view('partials/template-header', $data);
+        $this->load->view('grindhouse/v_manage');
+        $this->load->view('partials/template-footer', $data);
+    }
+
+    public function edit($grindhouseId) {
+        $data = $this->starterData;
+
+        $data['grindhouse'] = $this->grindhousemodel->getGrindhouseById($grindhouseId);
+        $data['grindhouseId'] = $grindhouseId;
+
+        $data['assembledFeature'] = $this->_assembleFeatureFromCommand($data['grindhouse']);
+        $this->load->view('partials/template-header', $data);
+        $this->load->view('grindhouse/v_edit');
+        $this->load->view('partials/template-footer', $data);
+    }
+
+    private function _assembleFeatureFromCommand($grindhouse) {
+        $elementsJson = json_decode($grindhouse['command']);
+        $elements = [];
+
+        foreach ($elementsJson as $element) {
+            $temp = [];
+            $temp['type'] = $element->type;
+            switch ($element->type) {
+                case 'Intro Preroll':
+                case 'Feature Presentation Preroll':
+                case 'Joiner Preroll':
+                case 'Outro Preroll':
+                case 'Intermission Preroll':
+                    $temp['item'] = $this->prerollmodel->getPrerollById($element->data->id);
+                    break;
+
+                case 'Trailer':
+                    foreach ($element->data as $e) {
+                        $temp['item'][] = $this->trailermodel->getTrailerById($e->id);
+                    }
+                    $elements[] = $temp;
+                    break;
+
+                case 'Film':
+                    $temp['item'] = $this->filmmodel->getFilmById($element->data->id);
+                    break;
+
+                default:
+                    $temp['item'] = $this->trailermodel->getTrailerById($element->data->id);
+                    break;
+            }
+            $elements[] = $temp;
+        }
+
+        return $elements;
+    }
+
     public function create() {
 
         $data = $this->starterData;
@@ -42,6 +105,26 @@ class Grindhouse extends MY_Controller {
         $this->load->view('grindhouse/v_create');
         $this->load->view('partials/template-footer', $data);
 
+    }
+
+    public function ajaxSave() {
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $_POST = Utility::getPost();
+
+            $qd = [
+                'title' => $this->input->post('title'),
+                'tagline' => $this->input->post('tagline'),
+                'show_date' => $this->input->post('showDate'),
+            ];
+            $grindhouseId = $this->input->post('id');
+
+            $this->grindhousemodel->updateGrindhouse($grindhouseId, $qd);
+
+            $response = [];
+            $jsonResponse = new JsonResponse();
+
+            echo $jsonResponse->create('ok', '', $response);
+        }
     }
 
     public function ajaxCreate() {
@@ -80,7 +163,7 @@ class Grindhouse extends MY_Controller {
             $command = $this->_processAssembledFeatureJson($assembledFeature);
 
             $qd = [
-                'name' => 'Sinema - ' . date('Y-m-d H:i:s'),
+                'title' => 'Sinema - ' . date('Y-m-d H:i:s'),
                 'tagline' => '',
                 'command' => $command,
                 'command_version' => '.1',
@@ -131,19 +214,26 @@ class Grindhouse extends MY_Controller {
         $return = [];
         foreach($assembledFeature as $featureItem) {
             if ($featureItem['type'] == 'Trailer') {
-                $temp = [];
+                $temp = [
+                    'type' => $featureItem['type'],
+                    'data' => [],
+                ];
                 foreach($featureItem['item'] as $item) {
-                    $temp[] = [
+                    $temp1 = [
                         'libraryId' => $item['library_id'],
                         'title' => $item['title'],
                         'id' => $item['id'],
                     ];
+                    $temp['data'][] = $temp1;
                 }
             } else {
                 $temp = [
-                    'libraryId' => $featureItem['item']['library_id'],
-                    'title' => $featureItem['item']['title'],
-                    'id' => $featureItem['item']['id'],
+                    'type' => $featureItem['type'],
+                    'data' => [
+                        'libraryId' => $featureItem['item']['library_id'],
+                        'title' => $featureItem['item']['title'],
+                        'id' => $featureItem['item']['id'],
+                    ],
                 ];
             }
             $return[] = $temp;

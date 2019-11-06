@@ -56,6 +56,8 @@ $route['grindhouse'] = 'grindhouse';
 $route['upcoming'] = 'grindhouse/upcoming';
 $route['past'] = 'grindhouse/past';
 $route['calendar'] = 'grindhouse/calendar';
+$route['admin/grindhouses'] = 'grindhouse/manage';
+$route['admin/grindhouse/edit/(:num)'] = 'grindhouse/edit/$1';
 
 $route['admin'] = 'admin';
 $route['admin/import-plex'] = 'importplex/import_plex';

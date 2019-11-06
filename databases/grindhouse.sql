@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS "map_country_film" (
 
 CREATE TABLE `grindhouse` (
     `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    `name` TEXT DEFAULT null,
+    `title` TEXT DEFAULT null,
     `tagline` TEXT DEFAULT null,
     `last_updated` TIMESTAMP DEFAULT current_timestamp
 );

@@ -19,6 +19,7 @@
 
                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/grindhouse/create" ng-if="viewVars.me.login">Create New</a>
+                    <a class="dropdown-item" href="/admin/grindhouses" ng-if="viewVars.me.login">Manage</a>
                     <div class="dropdown-divider" ng-if="viewVars.me.login"></div>
                     <a class="dropdown-item" href="/grindhouse/upcoming">Upcoming</a>
                     <a class="dropdown-item" href="/grindhouse/past">Past</a>

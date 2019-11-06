@@ -86,3 +86,7 @@
 .csv-result {
     height: 400px !important;
 }
+
+#calendar-dropdown::after {
+    display: none !important;
+}

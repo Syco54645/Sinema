@@ -26,7 +26,7 @@ def get_setting(conn, slug):
 
 def get_grindhouse(conn, id):
     cur = conn.cursor()
-    cur.execute("SELECT name, command, command_version FROM grindhouse WHERE id=?", (id,))
+    cur.execute("SELECT title, command, command_version FROM grindhouse WHERE id=?", (id,))
 
     rows = cur.fetchone()
 
@@ -45,7 +45,7 @@ def main():
         token = get_setting(conn, 'plex-api-token')
 
         grindhouse = get_grindhouse(conn, grindhouseId)
-        grindhouse_name = grindhouse[0]
+        grindhouse_title = grindhouse[0]
         grindhouse_command = grindhouse[1]
         grindhouse_command_version = grindhouse[2]
 
@@ -54,18 +54,18 @@ def main():
 
         total_videos = []
         for entry in command:
-            if type(entry) is dict: # dict is anything but a trailer
+            if type(entry['data']) is dict: # dict is anything but a trailer
                 #pprint(entry)
-                plex_video = plex.library.sectionByID(entry['libraryId']).get(entry['title'])
+                plex_video = plex.library.sectionByID(entry['data']['libraryId']).get(entry['data']['title'])
                 total_videos.append(plex_video)
 
-            if type(entry) is list: # trailers
-                for trailer in entry:
+            if type(entry['data']) is list: # trailers
+                for trailer in entry['data']:
                     #pprint(trailer)
                     plex_video = plex.library.sectionByID(trailer['libraryId']).get(trailer['title'])
                     total_videos.append(plex_video)
 
-        plex.createPlaylist(grindhouse_name, total_videos)
+        plex.createPlaylist(grindhouse_title, total_videos)
         response = {'status':"ok", 'data': {}}
         print json.dumps(response)
 

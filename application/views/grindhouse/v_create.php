@@ -139,39 +139,11 @@
 
                 <div class="row">
                     <div class="col-md-4">
-                        <div ng-repeat="featureItem in model.assembledFeature">
-                            <div ng-class="isSpoiler(featureItem.type)">
-                                <div ng-if="featureItem.type != 'Trailer'">
-                                    <b>{{ featureItem.type }}</b>: {{ featureItem.item.title }} <span ng-if="featureItem.item.year">- {{ featureItem.item.year }}</span>
-                                </div>
-                                <div ng-if="featureItem.type == 'Trailer'">
-                                    <b>{{ featureItem.type }}</b>:
-                                    <ul>
-                                        <li ng-repeat="trailer in featureItem.item">
-                                            {{ trailer.title }} <span ng-if="featureItem.item.year">- {{ trailer.year }}</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div ng-class="isSpoiler(featureItem.item.type)" ng-if="featureItem.item.type == 'trailer'">
-                            </div>
-                        </div>
+                        <?php $this->view('/partials/grindhouse-items'); ?>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            <div>
-                                <button class="btn btn-primary" type="button" ng-click="createPlexPlaylist()">
-                                    Create Plex Playlist
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-
 
         </div>
     </div>
