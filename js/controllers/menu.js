@@ -18,6 +18,10 @@ Sinema.controller('MenuController', ['$scope', '$location', '$http', '$window', 
       'preroll-edit',
       'trailer-edit',
     ],
+    plex: [
+      'importplex-import_plex',
+      'importplex-export_plex',
+    ],
     settings: [
       'admin-settings',
     ]
@@ -37,14 +41,12 @@ Sinema.controller('MenuController', ['$scope', '$location', '$http', '$window', 
   $scope.init = function () {
     $.each($('.sidebar .nav-item.sb-dropdown'), function (index, element) {
       var dataId = $(this).find('.nav-link').attr("data-id");
-      $(this).find('nav-link').css( "background-color", "red !important" )
       $scope.model.nav[dataId] = $scope.shouldOpen(dataId)? 'open': 'closed';
     });
     console.log($scope.model)
   }
 
   $scope.isOpen = function (dataId) {
-    //return true
     if ($scope.model.nav[dataId] == 'open') {
       return true;
     } else {
@@ -54,7 +56,6 @@ Sinema.controller('MenuController', ['$scope', '$location', '$http', '$window', 
 
   $scope.shouldOpen = function (dataId) {
     var shouldOpen = sitemap[dataId].includes(viewVars.currentRoute);
-    console.log("menuItem is active:",  shouldOpen)
     return shouldOpen;
   }
 

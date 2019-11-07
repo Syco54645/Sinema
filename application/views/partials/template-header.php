@@ -67,17 +67,17 @@
                                 <i class="fa fa-film" aria-hidden="true"></i> Grindhouse
                             </a>
                             <ul class="sb-dropdown-container">
-                                <li class="sb-dropdown-item" ng-class="{ active: isActive('grindhouse-create') }">
+                                <li class="sb-dropdown-item" ng-class="::{ active: isActive('grindhouse-create') }">
                                     <a class="sb-dropdown-nav-link" href="/grindhouse/create" ng-if="viewVars.me.login">Create New</a>
                                 </li>
-                                <li class="sb-dropdown-item" ng-class="{ active: isActive('grindhouse-manage') }">
+                                <li class="sb-dropdown-item" ng-class="::{ active: isActive('grindhouse-manage') }">
                                     <a class="sb-dropdown-nav-link" href="/admin/grindhouses" ng-if="viewVars.me.login">Manage</a>
                                 </li>
                                 <div class="dropdown-divider" ng-if="viewVars.me.login"></div>
-                                <li class="sb-dropdown-item" ng-class="{ active: isActive('grindhouse-upcoming') }">
+                                <li class="sb-dropdown-item" ng-class="::{ active: isActive('grindhouse-upcoming') }">
                                     <a class="sb-dropdown-nav-link" href="/grindhouse/upcoming">Upcoming</a>
                                 </li>
-                                <li class="sb-dropdown-item" ng-class="{ active: isActive('grindhouse-past') }">
+                                <li class="sb-dropdown-item" ng-class="::{ active: isActive('grindhouse-past') }">
                                     <a class="sb-dropdown-nav-link" href="/grindhouse/past">Past</a>
                                 </li>
                             </ul>
@@ -88,19 +88,33 @@
                                 <i class="fa fa-book" aria-hidden="true"></i> Libraries
                             </a>
                             <ul class="sb-dropdown-container">
-                                <li class="sb-dropdown-item" ng-class="{ active: isActive('film-manage') }">
-                                    <a class="sb-dropdown-nav-link" href="/admin/films" ng-if="viewVars.me.login">Manage Films</a>
+                                <li class="sb-dropdown-item" ng-class="::{ active: isActive('film-manage') }">
+                                    <a class="sb-dropdown-nav-link" href="/admin/films" ng-if="::viewVars.me.login">Manage Films</a>
                                 </li>
-                                <li class="sb-dropdown-item" ng-class="{ active: isActive('preroll-manage') }">
-                                    <a class="sb-dropdown-nav-link" href="/admin/prerolls" ng-if="viewVars.me.login && viewVars.sinemaSettings['enable-prerolls'] != '0'">Manage Prerolls</a>
+                                <li class="sb-dropdown-item" ng-class="::{ active: isActive('preroll-manage') }">
+                                    <a class="sb-dropdown-nav-link" href="/admin/prerolls" ng-if="::viewVars.me.login && viewVars.sinemaSettings['enable-prerolls'] != '0'">Manage Prerolls</a>
                                 </li>
-                                <li class="sb-dropdown-item" ng-class="{ active: isActive('trailer-manage') }">
-                                    <a class="sb-dropdown-nav-link" href="/admin/trailers" ng-if="viewVars.me.login && viewVars.sinemaSettings['enable-trailers'] != '0'">Manage Trailer</a>
+                                <li class="sb-dropdown-item" ng-class="::{ active: isActive('trailer-manage') }">
+                                    <a class="sb-dropdown-nav-link" href="/admin/trailers" ng-if="::viewVars.me.login && viewVars.sinemaSettings['enable-trailers'] != '0'">Manage Trailer</a>
                                 </li>
                             </ul>
                         </li>
 
-                        <li class="nav-item" ng-class="{ active: isActive('admin-settings') }">
+                        <li class="nav-item sb-dropdown" ng-class="{ open: isOpen('plex'), hidden: viewVars.sinemaSettings['enable-plex'] == '0' }">
+                            <a class="nav-link" ng-click="toggleDropdown($event)" data-id="plex" href="#">
+                                <i class="fa fa-video-camera" aria-hidden="true"></i> Plex
+                            </a>
+                            <ul class="sb-dropdown-container">
+                                <li class="sb-dropdown-item" ng-class="::{ active: isActive('importplex-import_plex') }">
+                                    <a class="sb-dropdown-nav-link" href="/admin/import-plex" ng-if="::viewVars.me.login">Import</a>
+                                </li>
+                                <li class="sb-dropdown-item" ng-class="::{ active: isActive('importplex-export_plex') }">
+                                    <a class="sb-dropdown-nav-link" href="/admin/export-plex" ng-if="::viewVars.me.login">Export</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item" ng-class="::{ active: isActive('admin-settings') }">
                             <a class="nav-link" href="/admin/settings">
                                 <i class="fa fa-cog" aria-hidden="true"></i> Settings
                             </a>
