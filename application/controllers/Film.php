@@ -65,8 +65,10 @@ class Film extends MY_Controller {
 
             $this->filmmodel->updateFilm($id, $qd);
 
-            $this->session->set_flashdata('success', 'Film Updated Successfully');
-            echo json_encode(['status' => 'success']);
+            $response = [];
+            $jsonResponse = new JsonResponse();
+
+            echo $jsonResponse->create('ok', '', $response);
         }
     }
 }

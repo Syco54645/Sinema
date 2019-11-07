@@ -1,4 +1,4 @@
-Sinema.controller('EditTrailerController', ['$scope', '$location', '$http', function($scope, $location, $http) {
+Sinema.controller('EditTrailerController', ['$scope', '$location', '$http', 'Flash', '$window', function($scope, $location, $http, Flash, $window) {
 
   $scope.model = {
     active: viewVars.trailer.active == "1",
@@ -28,15 +28,20 @@ Sinema.controller('EditTrailerController', ['$scope', '$location', '$http', func
       data: submitData
     });
 
-    promise.success(function(data) {
-      console.log(data);
-      if (data.status == "success") {
-        location.reload();
+    promise.then(function (response) {
+      $window.scrollTo(0, 0);
+    });
+
+    promise.success(function(response) {
+      console.log(response);
+      if (response.status == "ok") {
+        var message = 'Trailer Saved Successfully.';
+        Flash.create('success', message, 0, {}, true);
       }
     });
 
-    promise.error(function(data) {
-      console.log(data);
+    promise.error(function(response) {
+      console.log(response);
     });
   }
 
