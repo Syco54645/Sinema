@@ -23,7 +23,7 @@
                             <td>{{ ::film.id }}</td>
                             <td><a href="/admin/films/edit/{{ ::film.id }}">{{ ::film.title }}</a></td>
                             <td>{{ ::film.year }}</td>
-                            <td>{{ ::film.summary | cut}}</td>
+                            <td>{{ ::film.summary | cut }}</td>
                             <td><img class="film-image" ng-src="{{ ::film.thumbUrl }}" /></td>
                             <td>
                                 <div ng-repeat="genre in film.genres">
