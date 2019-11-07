@@ -59,7 +59,7 @@
 
                     <li class="nav-item sb-dropdown" ng-class="{ open: isOpen('grindhouse') }">
                         <a class="nav-link" ng-click="toggleDropdown($event)" data-id="grindhouse">
-                            <i class="nc-icon"></i>
+                            <i class="fa fa-film" aria-hidden="true"></i>
                             <p>Grindhouse</p>
                         </a>
                         <ul class="sb-dropdown-container">
@@ -81,7 +81,7 @@
 
                     <li class="nav-item sb-dropdown" ng-class="{ open: isOpen('library') }">
                         <a class="nav-link" ng-click="toggleDropdown($event)" data-id="library">
-                            <i class="nc-icon"></i>
+                            <i class="fa fa-book" aria-hidden="true"></i>
                             <p>Libraries</p>
                         </a>
                         <ul class="sb-dropdown-container">
@@ -100,12 +100,12 @@
 
                     <li class="nav-item" ng-class="{ active: isActive('admin-settings') }">
                         <a class="nav-link" href="/admin/settings">
-                            <i class="nc-icon"></i>
+                            <i class="fa fa-cog" aria-hidden="true"></i>
                             <p>Settings</p>
                         </a>
                     </li>
 
-                    <li class="nav-item active active-pro">
+                    <li class="nav-item active active-pro hidden">
                         <a class="nav-link active" href="/help">
                             <i class="nc-icon"></i>
                             <p>Version</p>

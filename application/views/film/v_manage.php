@@ -6,7 +6,7 @@
                 <p class="card-category" ng-if="::pageSubtitle()">{{ ::pageSubtitle() }}</p>
             </div>
             <div class="card-body">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped table-responsive">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -23,7 +23,7 @@
                             <td>{{ ::film.id }}</td>
                             <td><a href="/admin/films/edit/{{ ::film.id }}">{{ ::film.title }}</a></td>
                             <td>{{ ::film.year }}</td>
-                            <td>{{ ::film.summary }}</td>
+                            <td>{{ ::film.summary | cut}}</td>
                             <td><img class="film-image" ng-src="{{ ::film.thumbUrl }}" /></td>
                             <td>
                                 <div ng-repeat="genre in film.genres">
@@ -32,7 +32,7 @@
                             </td>
                             <td>
                                 <div ng-repeat="tag in film.tags">
-                                    <a href="/admin/films?tagId={{ ::tag.tag_id }}">{{ ::tag.tag }}</a>
+                                    <a class="tag" href="/admin/films?tagId={{ ::tag.tag_id }}">{{ ::tag.tag }}</a>
                                 </div>
                             </td>
                         </tr>
