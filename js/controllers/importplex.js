@@ -1,4 +1,4 @@
-Sinema.controller('ImportPlexController', ['$scope', '$location', '$http', function($scope, $location, $http) {
+Sinema.controller('ImportPlexController', ['$scope', '$location', '$http', 'Flash', '$window', function($scope, $location, $http, Flash, $window) {
 
   $scope.model = {
     processingMode: 'update',
@@ -51,18 +51,19 @@ Sinema.controller('ImportPlexController', ['$scope', '$location', '$http', funct
       data: submitData
     });
 
-    if ($scope.model.importType == 'movie') {
-      promise.success(function(data) {
-        console.log(data);
+    promise.success(function(response) {
+      console.log(response);
+      $scope.model.importing = false;
+
+      if ($scope.model.importType == 'movie') {
         if (step > 1) {
           $scope.model.filmBulkOffset += $scope.model.numFilmsToBulkProcess;
         }
 
-        if (data.status == "success") {
-          $scope.model.importing = false;
+        if (response.status == "ok") {
           var incrementStep = true;
           if ($scope.model.step == 2) {
-            if (data.more == true) {
+            if (response.more == true) {
               // there is more data so do not increment the step
               // increase the offset
               // go back and import more
@@ -75,13 +76,27 @@ Sinema.controller('ImportPlexController', ['$scope', '$location', '$http', funct
             $scope.model.step++;
           }
         }
-      });
-      promise.error(function(data) {
-        console.log(data);
-        $scope.model.importing = false;
-      });
-    }
+      } else if ($scope.model.importType == 'preroll' || $scope.model.importType == 'trailer') {
+        $window.scrollTo(0, 0);
+        var type = $scope.model.importType
+        var message = type.charAt(0).toUpperCase() + type.slice(1) + 's ' + prettyProcessingMode() + ' Successfully.';
+        Flash.create('success', message, 0, {}, true);
+      }
+    });
+
+    promise.error(function(response) {
+      console.log(response);
+      $scope.model.importing = false;
+    });
   } // end movie promise handler
+
+  var prettyProcessingMode = function () {
+    if ($scope.model.processingMode == 'update') {
+      return 'Updated';
+    } else {
+      return 'Imported';
+    }
+  }
 
 
 }]);

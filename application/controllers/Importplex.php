@@ -194,7 +194,7 @@ class ImportPlex extends MY_Controller {
             }
         }
         // todo add something so that we know if it fails
-        return ['status' => 'success'];
+        return [];
     }
 
     private function _plex_movie_step_two($service_url) {
@@ -232,7 +232,7 @@ class ImportPlex extends MY_Controller {
             $more = false;
         }
         // todo add something so that we know if it fails
-        return ['status' => 'success', 'more' => $more ];
+        return [ 'more' => $more ];
     }
 
     private function _plex_preroll_step_one($service_url, $libraryId) {
@@ -278,7 +278,8 @@ class ImportPlex extends MY_Controller {
             }
         }
         // todo add something so that we know if it fails
-        return ['status' => 'success'];
+
+        return [];
     }
 
     private function _plex_trailer_step_one($service_url, $libraryId) {
@@ -315,7 +316,7 @@ class ImportPlex extends MY_Controller {
             }
         }
         // todo add something so that we know if it fails
-        return ['status' => 'success'];
+        return [];
     }
 
     public function ajaxImportPlex($step) {
@@ -360,7 +361,10 @@ class ImportPlex extends MY_Controller {
                 break;
         }
 
-        echo json_encode($response);
+
+        $jsonResponse = new JsonResponse();
+
+        echo $jsonResponse->create('ok', '', $response);
     }
 
     public function ajaxExportPlex() {
@@ -394,7 +398,7 @@ class ImportPlex extends MY_Controller {
 
             $movies[] = $movie;
         }
-//Utility::debug($maxSubjects, true);
+
         $csvResult = $this->_create_csv($movies, $maxSubjects);
 
         $csv = $csvResult['csv'];
@@ -521,8 +525,6 @@ class ImportPlex extends MY_Controller {
             if (!empty($movie['summary'])) continue;
             */
             $line = [];
-            // todo make the identiferPrefix a variable
-            $identiferPrefix = 'sinema-trailer_';
             $idenfifierResults = $this->_createIdentifier($csv, $movie, $identiferPrefix);
             $identifier = $idenfifierResults['identifier'];
             if ($idenfifierResults['duplicate'] == true) {
