@@ -74,7 +74,11 @@
   text-transform: capitalize; }
 
 body {
-  font-size: .875rem; }
+  font-size: .875rem;
+  background-color: #343A40; }
+
+main {
+  padding-bottom: 50px; }
 
 .feather {
   width: 16px;
@@ -132,12 +136,23 @@ body {
 /*
  * Navbar
  */
+.top-nav {
+  background-color: #272B30 !important; }
+
 .navbar-brand {
   padding-top: .75rem;
   padding-bottom: .75rem;
   font-size: 1rem;
-  background-color: rgba(0, 0, 0, 0.25);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25); }
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
+  position: relative;
+  padding-left: 40px; }
+  .navbar-brand img {
+    height: 30px;
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    filter: invert(15%) sepia(60%) saturate(3708%) hue-rotate(349deg) brightness(102%) contrast(92%);
+    -webkit-filter: invert(15%) sepia(60%) saturate(3708%) hue-rotate(349deg) brightness(102%) contrast(92%); }
 
 .navbar .form-control {
   padding: .75rem 1rem;
@@ -163,7 +178,8 @@ body {
   border-bottom: 1px solid #e5e5e5; }
 
 .sb-dropdown {
-  cursor: pointer; }
+  cursor: pointer;
+  position: relative; }
   .sb-dropdown .nav-link {
     /* padding: 5px 15px !important; */
     /* margin: 0px 0px !important; */ }
@@ -193,12 +209,34 @@ body {
         display: inline-flex;
         color: white;
         width: 100%; }
+  .sb-dropdown::after {
+    font-family: FontAwesome;
+    content: "\f0d7";
+    color: white;
+    position: absolute;
+    right: 20px;
+    top: 10px; }
   .sb-dropdown.open {
     background-color: #65696E; }
     .sb-dropdown.open .nav-link {
       background-color: #6e6f71; }
     .sb-dropdown.open .sb-dropdown-container {
       display: block; }
+    .sb-dropdown.open::after {
+      content: "\f0d8"; }
+
+.footer {
+  background-color: #272B30;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  z-index: 100; }
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px; }
 
 /* link:hover, body>.navbar-collapse .nav li .nav-link:hover,
 .sidebar .nav li:hover .nav-link, body>.navbar-collapse .nav li:hover .nav-link,

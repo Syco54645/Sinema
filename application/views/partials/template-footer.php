@@ -1,5 +1,19 @@
 
             </main>
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <center>
+                                <span class="text-muted">Sinema is licensed under GPLv3. Written by Awesome People.</span>
+                                <span class="text-muted">V</span>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
         </div>
     </div>
     <!--script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script-->
