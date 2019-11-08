@@ -87,7 +87,9 @@
                                             ng-options="library.id as library.library_name for library in viewVars.libraries"
                                             ng-model="model.libraryId"
                                             ng-change="selectLibrary()"
-                                        ></select>
+                                        >
+                                            <option value="">--------</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <div>
@@ -102,7 +104,7 @@
                                     <div class="form-group ">
                                         <label class="control-label" for="import-type">Type</label>
                                         <select class="form-control" name="import-type" id="import-type" ng-model="model.importType">
-                                            <option>--------</option>
+                                            <option value="">--------</option>
                                             <option value="movie">Movies</option>
                                             <option value="preroll" ng-if="viewVars.sinemaSettings['enable-prerolls'] == '1'">Prerolls</option>
                                             <option value="trailer" ng-if="viewVars.sinemaSettings['enable-trailers'] == '1'">Trailers</option>

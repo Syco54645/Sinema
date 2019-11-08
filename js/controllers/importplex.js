@@ -2,7 +2,7 @@ Sinema.controller('ImportPlexController', ['$scope', '$location', '$http', funct
 
   $scope.model = {
     processingMode: 'update',
-    importType: '--------',
+    importType: '',
     libraryAlias: null,
     libraryId: null,
     importing: false,
