@@ -23,7 +23,7 @@ Sinema.controller('ExportPlexController', ['$scope', '$location', '$http', funct
       collectionName: $scope.model.collectionName,
       exportType: $scope.model.exportType,
     };
-//    $scope.model.exporting = true;
+    $scope.model.exporting = true;
 
     var promise = $http({
       url: '/ajax/export-plex',
