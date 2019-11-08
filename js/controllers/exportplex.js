@@ -6,9 +6,9 @@ Sinema.controller('ExportPlexController', ['$scope', '$location', '$http', funct
     exporting: false,
     step: 1,
     csv: null,
-    collectionName: 'sinema-trailers',
+    collectionName: 'opensource_movies',
     exportType: 'file',
-    identifierPrefix: 'sinema-trailer',
+    identifierPrefix: '<something>-trailer',
   };
 
   $scope.clickPlexLibrary = function (id, title) {
