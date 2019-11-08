@@ -101,9 +101,15 @@ class Admin extends MY_Controller {
             foreach($_POST['settings'] as $setting => $settingValue) {
                 $this->settingsmodel->saveSetting($setting, $settingValue);
             }
-            $this->session->set_flashdata('success', 'Settings Updated Successfully');
+
             $sinemaSettings = $this->updateSinemaSettings();
-            echo json_encode(['status' => 'success', 'sinemaSettings' => $sinemaSettings]);
+
+            $response = [
+                'sinemaSettings' => $sinemaSettings,
+            ];
+            $jsonResponse = new JsonResponse();
+
+            echo $jsonResponse->create('ok', '', $response);
         }
     }
 

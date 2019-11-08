@@ -1,38 +1,46 @@
-<div>
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <table class="table table-hover">
-                <thead>
-                    <tr class="row">
-                        <th class="col-md-1">ID</th>
-                        <th class="col-md-3">Title</th>
-                        <th class="col-md-1">Year</th>
-                        <th class="col-md-4">Summary</th>
-                        <th class="col-md-1">Thumb</th>
-                        <th class="col-md-1">Genres</th>
-                        <th class="col-md-1">Tags</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="row" ng-repeat="film in viewVars.films">
-                        <td class="col-md-1">{{ ::film.id }}</td>
-                        <td class="col-md-3"><a href="/admin/films/edit/{{ ::film.id }}">{{ ::film.title }}</a></td>
-                        <td class="col-md-1">{{ ::film.year }}</td>
-                        <td class="col-md-4">{{ ::film.summary }}</td>
-                        <td class="col-md-1"><img class="film-image" ng-src="{{ ::film.thumbUrl }}" /></td>
-                        <td class="col-md-1">
-                            <div ng-repeat="genre in film.genres">
-                                <a href="/admin/films?genreId={{ ::genre.genre_id }}">{{ ::genre.genre }}</a>
-                            </div>
-                        </td>
-                        <td class="col-md-1">
-                            <div ng-repeat="tag in film.tags">
-                                <a href="/admin/films?tagId={{ ::tag.tag_id }}">{{ ::tag.tag }}</a>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header ">
+                <h4 class="card-title">{{ ::pageTitle() }}</h4>
+                <p class="card-category" ng-if="::pageSubtitle()">{{ ::pageSubtitle() }}</p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Year</th>
+                                <th>Summary</th>
+                                <th>Thumb</th>
+                                <th>Genres</th>
+                                <th>Tags</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="film in viewVars.films">
+                                <td>{{ ::film.id }}</td>
+                                <td><a href="/admin/films/edit/{{ ::film.id }}">{{ ::film.title }}</a></td>
+                                <td>{{ ::film.year }}</td>
+                                <td>{{ ::film.summary | cut }}</td>
+                                <td><img class="film-image" ng-src="{{ ::film.thumbUrl }}" /></td>
+                                <td>
+                                    <div ng-repeat="genre in film.genres">
+                                        <a href="/admin/films?genreId={{ ::genre.genre_id }}">{{ ::genre.genre }}</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div ng-repeat="tag in film.tags">
+                                        <a class="tag" href="/admin/films?tagId={{ ::tag.tag_id }}">{{ ::tag.tag }}</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

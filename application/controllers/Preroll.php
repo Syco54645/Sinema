@@ -58,8 +58,10 @@ class Preroll extends MY_Controller {
 
             $this->prerollmodel->updatePreroll($id, $qd);
 
-            $this->session->set_flashdata('success', 'Preroll Updated Successfully');
-            echo json_encode(['status' => 'success']);
+            $response = [];
+            $jsonResponse = new JsonResponse();
+
+            echo $jsonResponse->create('ok', '', $response);
         }
     }
 }

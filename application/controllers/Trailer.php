@@ -54,8 +54,10 @@ class Trailer extends MY_Controller {
 
             $this->trailermodel->updateTrailer($id, $qd);
 
-            $this->session->set_flashdata('success', 'Trailer Updated Successfully');
-            echo json_encode(['status' => 'success']);
+            $response = [];
+            $jsonResponse = new JsonResponse();
+
+            echo $jsonResponse->create('ok', '', $response);
         }
     }
 }

@@ -52,21 +52,21 @@ Sinema.controller('SettingsController', ['$scope', '$location', '$http', 'Flash'
       data: submitData
     });
 
-    promise.then(function (data) {
+    promise.then(function (response) {
       $window.scrollTo(0, 0);
     });
 
-    promise.success(function (data) {
-      console.log(data);
-      if (data.status == "success") {
+    promise.success(function (response) {
+      console.log(response);
+      if (response.status == "ok") {
         var message = 'Settings Saved Successfully.';
         Flash.create('success', message, 0, {}, true);
-        viewVars.sinemaSettings = data.sinemaSettings;
+        viewVars.sinemaSettings = response.sinemaSettings;
       }
     });
 
-    promise.error(function (data) {
-      console.log(data);
+    promise.error(function (response) {
+      console.log(response);
     });
   }
 
