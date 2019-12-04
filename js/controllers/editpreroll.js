@@ -9,6 +9,7 @@ Sinema.controller('EditPrerollController', ['$scope', '$location', '$http', 'Fla
       active: viewVars.preroll.active,
       preroll_type_id: viewVars.preroll.preroll_type_id,
       preroll_series_id: viewVars.preroll.preroll_series_id,
+      library_id: viewVars.preroll.library_id,
     }
   };
 
@@ -23,6 +24,10 @@ Sinema.controller('EditPrerollController', ['$scope', '$location', '$http', 'Fla
   $scope.savePreroll = function (step) {
 
     var submitData = $scope.model.preroll;
+
+    if (submitData['id'] == undefined) { // this signifies that it is an insert rather than an update
+      delete submitData['id'];
+    }
 
     var promise = $http({
       url: '/preroll/ajaxSave',
@@ -39,6 +44,9 @@ Sinema.controller('EditPrerollController', ['$scope', '$location', '$http', 'Fla
       if (response.status == "ok") {
         var message = 'Preroll Saved Successfully.';
         Flash.create('success', message, 0, {}, true);
+        if (response.data.hasOwnProperty('preroll_id') && response.data.preroll_id) {
+          window.location.href = '/admin/prerolls/edit/' + response.data.preroll_id
+        }
       }
     });
 
