@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS "films" (
     `thumbUrl`  TEXT DEFAULT null,
     `artUrl`    TEXT DEFAULT null,
     `active` INTEGER DEFAULT 1,
-    `library_id` INTEGER DEFAULT null
+    `library_id` INTEGER DEFAULT null,
+    `source`    TEXT,
     PRIMARY KEY(`id`)
 );
 
@@ -139,6 +140,7 @@ CREATE TABLE IF NOT EXISTS "prerolls" (
     `active`    INTEGER DEFAULT 1,
     `preroll_series_id` INTEGER DEFAULT null,
     `library_id`    INTEGER DEFAULT null,
+    `source`    TEXT,
     PRIMARY KEY(`id`)
 );
 
@@ -148,5 +150,25 @@ CREATE TABLE `preroll_series` (
     `preroll_series_slug` TEXT NOT NULL,
     `active` INTEGER DEFAULT 1
 )
+
+CREATE TABLE `trailers` (
+    `id`    INTEGER NOT NULL UNIQUE,
+    `title` TEXT NOT NULL,
+    `studio`    INTEGER DEFAULT null,
+    `rating`    TEXT DEFAULT null,
+    `year`  TEXT DEFAULT null,
+    `summary`   TEXT DEFAULT null,
+    `thumb` TEXT DEFAULT null,
+    `art`   TEXT DEFAULT null,
+    `guid`  TEXT DEFAULT null,
+    `imdbId`    TEXT DEFAULT null,
+    `thumbUrl`  TEXT DEFAULT null,
+    `artUrl`    TEXT DEFAULT null,
+    `active`    INTEGER DEFAULT 1,
+    `library_id`    INTEGER DEFAULT null,
+    `have_film` INTEGER DEFAULT 0,
+    `source`    TEXT,
+    PRIMARY KEY(`id`)
+);
 
 COMMIT;
