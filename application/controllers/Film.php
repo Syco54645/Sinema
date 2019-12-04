@@ -45,11 +45,28 @@ class Film extends MY_Controller {
         $this->load->view('partials/template-footer', $data);
     }
 
+    public function create() {
+        $data = $this->starterData;
+
+        $data['film'] = [];
+
+        $data['title'] = "Create Film";
+
+        $data['libraries'] = $this->filmmodel->getLibraryAliases();
+
+        $this->load->view('partials/template-header', $data);
+        $this->load->view('film/v_edit');
+        $this->load->view('partials/template-footer', $data);
+    }
+
     public function edit($filmId) {
         $data = $this->starterData;
 
         $data['film'] = $this->filmmodel->getFilmById($filmId);
 
+        $data['title'] = "Edit Film - " . $data['film']['title'];
+
+        $data['libraries'] = $this->filmmodel->getLibraryAliases();
 
         $this->load->view('partials/template-header', $data);
         $this->load->view('film/v_edit');
@@ -63,9 +80,14 @@ class Film extends MY_Controller {
             $id = $this->input->post('id');
             unset($qd['id']);
 
-            $this->filmmodel->updateFilm($id, $qd);
-
             $response = [];
+            if ($id == null) {
+                $filmId = $this->filmmodel->storeFilm($qd);
+                $response['film_id'] = $filmId;
+            } else {
+                $this->filmmodel->updateFilm($id, $qd);
+            }
+
             $jsonResponse = new JsonResponse();
 
             echo $jsonResponse->create('ok', '', $response);

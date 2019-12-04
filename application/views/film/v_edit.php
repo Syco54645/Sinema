@@ -29,10 +29,46 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="control-label " for="year">
+                                Year
+                            </label>
+                            <input class="form-control" type="text" name="year" id="year" ng-model="model.film.year" />
+                        </div>
+
+                        <div class="form-group">
                             <label class="control-label " for="description">
-                                Description
+                                Summary
                             </label>
                             <textarea class="form-control" cols="40" id="description" name="description" rows="10" ng-model="model.film.summary"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label " for="studio">
+                                Studio
+                            </label>
+                            <input class="form-control" type="text" name="studio" id="studio" ng-model="model.film.studio" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label " for="rating">
+                                Rating
+                            </label>
+                            <input class="form-control" type="text" name="rating" id="rating" ng-model="model.film.rating" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label " for="type">
+                               Type
+                            </label>
+                            <select class="select form-control"
+                                name="type"
+                                id="libraryId"
+                                ng-options="library.id as library.library_name for library in viewVars.libraries"
+                                ng-model="model.film.library_id"
+                                ng-change="selectLibrary()"
+                            >
+                                <option value="">--------</option>
+                            </select>
                         </div>
 
                         <div class="form-group">

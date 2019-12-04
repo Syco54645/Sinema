@@ -4,6 +4,9 @@
             <div class="card-header ">
                 <h4 class="card-title">{{ ::pageTitle() }}</h4>
                 <p class="card-category" ng-if="::pageSubtitle()">{{ ::pageSubtitle() }}</p>
+                <div class="card-actions">
+                    <a class="btn btn-primary" href="/admin/films/create">Add</a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

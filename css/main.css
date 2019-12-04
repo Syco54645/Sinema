@@ -73,6 +73,13 @@
 .tag {
   text-transform: capitalize; }
 
+.card {
+  position: relative; }
+  .card .card-actions {
+    position: absolute;
+    right: 15px;
+    top: 10px; }
+
 body {
   font-size: .875rem;
   background-color: #343A40; }

@@ -166,6 +166,7 @@ class ImportPlex extends MY_Controller {
                 'thumbUrl' => $movie['thumbUrl'],
                 'artUrl' => $movie['artUrl'],
                 'library_id' => $libraryId,
+                'source' => 'plex',
             ];
 
             // insert the film if it doesnt exist

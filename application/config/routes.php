@@ -77,6 +77,7 @@ $route['admin/trailers/edit/(:num)'] = 'trailer/edit/$1';
 
 $route['admin/films'] = 'film/manage';
 $route['admin/films/edit/(:num)'] = 'film/edit/$1';
+$route['admin/films/create'] = 'film/create';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
