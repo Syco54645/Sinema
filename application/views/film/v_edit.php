@@ -57,11 +57,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label " for="type">
-                               Type
+                            <label class="control-label " for="library">
+                               Library
                             </label>
                             <select class="select form-control"
-                                name="type"
+                                name="library"
                                 id="libraryId"
                                 ng-options="library.id as library.library_name for library in viewVars.libraries"
                                 ng-model="model.film.library_id"
