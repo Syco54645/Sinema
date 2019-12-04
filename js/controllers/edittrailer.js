@@ -7,6 +7,7 @@ Sinema.controller('EditTrailerController', ['$scope', '$location', '$http', 'Fla
       title: viewVars.trailer.title,
       summary: viewVars.trailer.summary,
       active: viewVars.trailer.active,
+      library_id: viewVars.trailer.library_id,
     }
   };
 
@@ -21,6 +22,10 @@ Sinema.controller('EditTrailerController', ['$scope', '$location', '$http', 'Fla
   $scope.saveTrailer = function (step) {
 
     var submitData = $scope.model.trailer;
+
+    if (submitData['id'] == undefined) { // this signifies that it is an insert rather than an update
+      delete submitData['id'];
+    }
 
     var promise = $http({
       url: '/trailer/ajaxSave',
@@ -37,6 +42,9 @@ Sinema.controller('EditTrailerController', ['$scope', '$location', '$http', 'Fla
       if (response.status == "ok") {
         var message = 'Trailer Saved Successfully.';
         Flash.create('success', message, 0, {}, true);
+        if (response.data.hasOwnProperty('trailer_id') && response.data.trailer_id) {
+          window.location.href = '/admin/trailers/edit/' + response.data.trailer_id
+        }
       }
     });
 

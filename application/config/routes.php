@@ -75,6 +75,7 @@ $route['admin/prerolls/create'] = 'preroll/create';
 
 $route['admin/trailers'] = 'trailer/manage';
 $route['admin/trailers/edit/(:num)'] = 'trailer/edit/$1';
+$route['admin/trailers/create'] = 'trailer/create';
 
 $route['admin/films'] = 'film/manage';
 $route['admin/films/edit/(:num)'] = 'film/edit/$1';

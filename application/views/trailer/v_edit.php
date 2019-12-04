@@ -30,9 +30,23 @@
 
                         <div class="form-group">
                             <label class="control-label " for="description">
-                                Description
+                                Summary
                             </label>
                             <textarea class="form-control" cols="40" id="description" name="description" rows="10" ng-model="model.trailer.summary"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label " for="library">
+                               Library
+                            </label>
+                            <select class="select form-control"
+                                name="library"
+                                id="libraryId"
+                                ng-options="library.id as library.library_name for library in viewVars.libraries"
+                                ng-model="model.trailer.library_id"
+                            >
+                                <option value="">--------</option>
+                            </select>
                         </div>
 
                         <div class="form-group">

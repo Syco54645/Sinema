@@ -35,7 +35,7 @@ class TrailerModel extends MY_Model {
         $this->db->from('trailers');
         $this->db->where('id', $id);
 
-        return $this->db->get()->row();
+        return $this->db->get()->row_array();
     }
 
     public function checkTrailerExists($id) {

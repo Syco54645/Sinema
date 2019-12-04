@@ -35,10 +35,26 @@ class Trailer extends MY_Controller {
         $this->load->view('partials/template-footer', $data);
     }
 
+    public function create() {
+        $data = $this->starterData;
+
+        $data['trailer'] = [];
+        $data['title'] = "Create Trailer";
+
+        $data['libraries'] = $this->filmmodel->getLibraryAliases();
+
+        $this->load->view('partials/template-header', $data);
+        $this->load->view('trailer/v_edit');
+        $this->load->view('partials/template-footer', $data);
+    }
+
     public function edit($trailerId) {
         $data = $this->starterData;
 
         $data['trailer'] = $this->trailermodel->getTrailerById($trailerId);
+        $data['title'] = "Edit Trailer - " . $data['trailer']['title'];
+
+        $data['libraries'] = $this->filmmodel->getLibraryAliases();
 
         $this->load->view('partials/template-header', $data);
         $this->load->view('trailer/v_edit');
@@ -52,9 +68,14 @@ class Trailer extends MY_Controller {
             $id = $this->input->post('id');
             unset($qd['id']);
 
-            $this->trailermodel->updateTrailer($id, $qd);
-
             $response = [];
+            if ($id == null) {
+                $trailerId = $this->trailermodel->storeTrailer($qd);
+                $response['trailer_id'] = $trailerId;
+            } else {
+                $this->trailermodel->updateTrailer($id, $qd);
+            }
+
             $jsonResponse = new JsonResponse();
 
             echo $jsonResponse->create('ok', '', $response);
