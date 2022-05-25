@@ -4,7 +4,7 @@
   "author": "Syco54645",
   "private": true,
   "devDependencies": {
-    "grunt": "1.0.1",
+    "grunt": "1.5.3",
     "grunt-contrib-cssmin": "1.0.1",
     "grunt-contrib-watch": "1.0.0",
     "grunt-newer": "1.1.2",
